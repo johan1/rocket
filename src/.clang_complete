@@ -1,0 +1,4 @@
+ -DANDROID
+ -I.
+ -I../../third_party/glm
+
