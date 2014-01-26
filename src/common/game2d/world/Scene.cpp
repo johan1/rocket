@@ -5,6 +5,8 @@
 #include <stack>
 #include "../../util/Geometry.h"
 
+#include "../../util/StlConvenience.h"
+
 using namespace rocket::util;
 
 namespace rocket { namespace game2d {
@@ -52,16 +54,14 @@ RenderObject *Scene::add(std::shared_ptr<Renderable> const& renderable, bool gro
 void Scene::remove(RenderObject *ro) {
 	if (ro->isGrouped()) {
 		groupedObjects.remove(ro);
+		erase(changedGroupedObjects, ro);
 	} else {
-		ungroupedObjects.erase(std::remove(ungroupedObjects.begin(), ungroupedObjects.end(), ro),
-				ungroupedObjects.end());
+		erase(ungroupedObjects, ro);
 	}
 
-	auto result = std::remove_if(renderObjects.begin(), renderObjects.end(),
-			[ro] (std::unique_ptr<RenderObject> const& r) {
+	erase_if(renderObjects, [ro] (std::unique_ptr<RenderObject> const& r) {
 		return r.get() == ro;
 	});
-	renderObjects.erase(result, renderObjects.end());
 }
 
 void Scene::updateProjection() {
