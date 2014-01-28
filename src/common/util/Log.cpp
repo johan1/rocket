@@ -73,15 +73,6 @@ void Logger::LoggerTask::operator()() {
 		std::cout << "ERROR: ";
 	}
 
-	// Trim trailing newline from log message
-	/*
-	std::string::size_type i;
-	for (i = message.size()-1; i > 0 && message[i] == '\n'; --i) {}
-	if (i < (message.size()-1)) {
-		message = message.substr(0, i);
-	}
-	*/
-
 	std::cout << message << std::endl;
 #else
 #pragma clang diagnostic push

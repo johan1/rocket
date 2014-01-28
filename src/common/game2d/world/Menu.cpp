@@ -101,7 +101,7 @@ void Menu::addItem(std::string const& itemLabel, std::function<void()> const& it
 }
 
 void Menu::updateItems() {
-	LOGD(boost::format("Menu width: %f") % menuWidth);
+	LOGD("Menu width: " << menuWidth);
 	auto xOffset = -menuWidth/2.0f;
 	auto yPos = ((menuItems.size() - 1) * fontSize)/2.0f; 
 	for (auto &menuItem : menuItems) {

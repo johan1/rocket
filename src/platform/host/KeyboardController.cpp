@@ -22,7 +22,7 @@ KeyboardController::KeyboardController() {
 	keymap[XK_space] = button_id::BUTTON2;
 
 	for (auto& p : keymap) {
-		LOGD(boost::format("Keyboard controller mapped key %d to %d") % p.first % p.second);
+		LOGD("Keyboard controller mapped key " << p.first << " to " << p.second);
 	}
 }
 

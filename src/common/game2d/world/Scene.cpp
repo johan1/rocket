@@ -77,7 +77,6 @@ void Scene::updateProjection() {
 void Scene::updateRenderList() {
 	for (auto &ro : changedGroupedObjects) {
 		auto pos = ro->getGlobalPosition();
-//		LOGE(boost::format("Moving object (%s) to new position (%f, %f, %f)") % ro % pos.x % pos.y % pos.z);
 		groupedObjects.move(ro, pos);
 	}
 	changedGroupedObjects.clear();
@@ -118,7 +117,7 @@ void Scene::render() {
 
 	frameCount++;
 	if(frameCount % 600 == 0) {
-		LOGD(boost::format("RenderList size: %d") % renderList.size());
+		LOGD("RenderList size: " << renderList.size());
 	}
 
 	canvas.clear();

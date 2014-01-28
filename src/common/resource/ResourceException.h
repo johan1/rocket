@@ -21,7 +21,7 @@ public:
 	};
 
 	ResourceException(Type type, std::string const& msg) : std::runtime_error{msg}, type{type} {
-		LOGE(boost::format("Resource exception %s, type=%d") % msg % static_cast<int>(type));
+		LOGE("Resource exception " << msg << ", type=" << static_cast<int>(type));
 	}
 
 	Type getType() const { return type; }

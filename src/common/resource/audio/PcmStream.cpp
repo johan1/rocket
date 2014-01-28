@@ -26,7 +26,7 @@ PcmStream::PcmStream(std::unique_ptr<PcmDecoder> &&decoder) : decoder(std::move(
 			lock_guard<mutex> lock(packetsMutex);
 			allPacketsRead = true;
 		}
-		LOGD(boost::format("Finished decoding, %d packets decoded") % packetCount);
+		LOGD("Finished decoding, " << packetCount << " packets decoded");
 		this->decoder.reset();
 	});
 }

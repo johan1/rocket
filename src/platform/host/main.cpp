@@ -61,7 +61,7 @@ void postPointerEvent(PointerEvent::ActionType actionType,
 
 
 int main() {
-	LOGD("Hello rocket!\n");
+	LOGD("Hello rocket!");
 
 	setInitParams();
 	

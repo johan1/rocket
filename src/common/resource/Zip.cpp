@@ -206,8 +206,7 @@ Zip::Zip(std::string const& zipPath) :
 
 void Zip::list() const {
 	for (auto file : files) {
-		LOGD(boost::format("%s\n") % *(file.second));
-//		std::cout << *(file.second) << std::endl;
+		LOGD(*(file.second));
 	}
 }
 

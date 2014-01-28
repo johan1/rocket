@@ -44,25 +44,25 @@ void Application::create(EGLNativeDisplayType displayId) {
 	auto future = renderThread.submit([&]() {
 		LOGD("Application::create\n");
 
-		LOGD(boost::format("Egl config attribs %s\n") % configAttribs);
-		LOGD(boost::format("Egl context attribs %s\n") % contextAttribs);
-		LOGD(boost::format("Egl surface attrivs %s\n") % surfaceAttribs);
+		LOGD("Egl config attribs " << configAttribs);
+		LOGD("Egl context attribs " << contextAttribs);
+		LOGD("Egl surface attrivs " << surfaceAttribs);
 
 		// Selecting api. Assuming we're alone in this thread to work with egl. Thus no need to wait for native, and consider closing previous api.
 		eglBindAPI(EGL_OPENGL_ES_API);
 		eglWaitClient();
 
 		eglDisplay = std::unique_ptr<EglDisplay>(new EglDisplay(displayId));
-		LOGD(boost::format("EGL client apis: %s\n") % eglDisplay->queryString(EGL_CLIENT_APIS));
-		LOGD(boost::format("EGL extensions: %s\n") % eglDisplay->queryString(EGL_EXTENSIONS));
-		LOGD(boost::format("EGL vendor: %s\n") % eglDisplay->queryString(EGL_VENDOR));
-		LOGD(boost::format("EGL version: %s\n") % eglDisplay->queryString(EGL_VERSION));
+		LOGD("EGL client apis: " << eglDisplay->queryString(EGL_CLIENT_APIS));
+		LOGD("EGL extensions: \n" << eglDisplay->queryString(EGL_EXTENSIONS));
+		LOGD("EGL vendor: " << eglDisplay->queryString(EGL_VENDOR));
+		LOGD("EGL version: " << eglDisplay->queryString(EGL_VERSION));
 
 		// Picking EGL Config
 		eglConfig = eglDisplay->pickConfig(configAttribs);
 		EglAttribMap attribs = eglDisplay->getConfigAttribs(eglConfig);
 		eglMaxSwapInterval = attribs[EGL_MAX_SWAP_INTERVAL];
-		LOGD(boost::format("Picked config: %s") % attribs);
+		LOGD("Picked config: " << attribs);
 
 		// Creating context
 		eglContext = eglDisplay->createContext(eglConfig, contextAttribs);
@@ -79,7 +79,7 @@ void Application::destroy() {
 		resources.reset();
 		eglContext.reset();
 		eglDisplay.reset();
-		LOGD("Application::destroy\n");
+		LOGD("Application::destroy");
 	});
 	future.wait();
 	LOGD("Application::destroy done");
@@ -87,7 +87,7 @@ void Application::destroy() {
 
 void Application::pause() {
 	auto future = renderThread.submit([&]() {
-		LOGD("Application::pause\n");
+		LOGD("Application::pause");
 		isPaused = true;
 	
 		if (openglReady) {
@@ -101,7 +101,7 @@ void Application::pause() {
 
 void Application::resume() {	
 	auto future = renderThread.submit([&]() {
-		LOGD("Application::resume\n");
+		LOGD("Application::resume");
 		isPaused = false;
 
 		if (openglReady) {
@@ -114,7 +114,7 @@ void Application::resume() {
 
 void Application::surfaceCreated(EGLNativeWindowType windowId) {
 	auto future = renderThread.submit([&]() {
-		LOGD("Application::surfaceCreated\n");
+		LOGD("Application::surfaceCreated");
 		eglSurface = eglDisplay->createSurface(eglConfig, windowId, surfaceAttribs);
 
 		scheduleMainLoop = true;
@@ -124,7 +124,7 @@ void Application::surfaceCreated(EGLNativeWindowType windowId) {
 
 void Application::surfaceDestroyed(EGLNativeWindowType) {
 	auto future = renderThread.submit([&]() {
-		LOGD("Application::surfaceDestroyed\n");
+		LOGD("Application::surfaceDestroyed");
 		eglSurface.reset();
 	});
 
@@ -133,12 +133,12 @@ void Application::surfaceDestroyed(EGLNativeWindowType) {
 
 void Application::surfaceChanged(EGLNativeWindowType, int, int width, int height) {
 	auto future = renderThread.submit([&]() {
-		LOGD("Application::surfaceChanged\n");
+		LOGD("Application::surfaceChanged");
 
-		LOGD(boost::format("Surface %s=%d\n") % eglAttribToString(EGL_CONFIG_ID) % eglSurface->query(EGL_CONFIG_ID));
-		LOGD(boost::format("Surface %s=%d\n") % eglAttribToString(EGL_WIDTH) % eglSurface->query(EGL_WIDTH));
-		LOGD(boost::format("Surface %s=%d\n") % eglAttribToString(EGL_HEIGHT) % eglSurface->query(EGL_HEIGHT));
-		LOGD(boost::format("Surface %s=0x%x\n") % eglAttribToString(EGL_SWAP_BEHAVIOR) % eglSurface->query(EGL_SWAP_BEHAVIOR));
+		LOGD("Surface " << eglAttribToString(EGL_CONFIG_ID) << "=" << eglSurface->query(EGL_CONFIG_ID));
+		LOGD("Surface " << eglAttribToString(EGL_WIDTH) << "=" << eglSurface->query(EGL_WIDTH));
+		LOGD("Surface " << eglAttribToString(EGL_HEIGHT) << "=" << eglSurface->query(EGL_HEIGHT));
+		LOGD("Surface " << eglAttribToString(EGL_SWAP_BEHAVIOR) << "=" << eglSurface->query(EGL_SWAP_BEHAVIOR));
 
 		engine->surfaceChanged(width, height);
 
@@ -217,7 +217,7 @@ void Application::mainLoop() {
 		if (frameDiagnosticCount == 300) {
 			auto duration = duration_cast<milliseconds>(system_clock::now()-frameDiagnosticTimePoint);
 			float fps = 300000/static_cast<float>(duration.count());
-			LOGD(boost::format("FPS: %f\n") % fps);
+			LOGD("FPS: " << fps);
 
 			frameDiagnosticCount = 0;
 			frameDiagnosticTimePoint = system_clock::now();

@@ -70,7 +70,7 @@ public:
 
     virtual void operator()() {
 #ifdef THREAD_POOL_DEBUG
-		LOGD(boost::format("Setting task promise %s") % this);
+		LOGD("Setting task promise " << this);
 #endif
 		p.set_value(fun());
     }
@@ -95,7 +95,7 @@ public:
 		fun();
 		p.set_value();
 #ifdef THREAD_POOL_DEBUG
-		LOGD(boost::format("Setting task promise %s") % this);
+		LOGD("Setting task promise " << this);
 #endif
 	}
 

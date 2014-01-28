@@ -12,7 +12,8 @@ class EglException : public std::runtime_error {
 public:
 	EglException(std::string const& what) : std::runtime_error(what) {
 		this->error = eglGetError();
-		LOGE(boost::format("Generated egl exception (0x%x), %s, %s\n") % this->error % what % eglErrorToString(this->error) );
+		LOGE("Generated egl exception (0x" << this->error << "), " << what << ", " <<
+				eglErrorToString(this->error));
 	}
 
 	EGLint getError() const {

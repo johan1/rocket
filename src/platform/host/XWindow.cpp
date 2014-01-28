@@ -44,7 +44,7 @@ XApplication::XApplication() {
 	}
 
 	deleteWindowAtom = XInternAtom(display, "WM_DELETE_WINDOW", 0);
-	LOGD(boost::format("Created delete window atom: %d") % deleteWindowAtom);
+	LOGD("Created delete window atom: " << deleteWindowAtom);
 }
 
 XApplication::~XApplication() {

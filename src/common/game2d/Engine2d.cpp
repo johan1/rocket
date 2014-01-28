@@ -19,7 +19,7 @@ using namespace rocket::resource;
 namespace rocket { namespace game2d {
 
 Engine2d::Engine2d() {
-	LOGD(boost::format("Engine2d constructor %s") % this);
+	LOGD("Engine2d constructor " << this);
 }
 
 void Engine2d::created() {

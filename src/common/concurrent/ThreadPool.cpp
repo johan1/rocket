@@ -23,7 +23,7 @@ ThreadPool::ThreadPool(int numberOfWorkers) : isShuttingDown(false), mainThreadI
 
 			if (task.get() != nullptr ) {
 #ifdef THREAD_POOL_DEBUG
-				LOGD(boost::format("Executing task %s") % task.get());
+				LOGD("Executing task " << task.get());
 #endif
             	(*task.get())();
 			} else {

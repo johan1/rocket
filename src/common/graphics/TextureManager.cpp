@@ -13,15 +13,14 @@ namespace rocket { namespace graphics {
 
 Texture2d& TextureManager::getTexture(ResourceId const& resourceId) {
 	if (textures.find(resourceId) != textures.end()) {
-//		LOGE(("Looked up resourceId %s") )
 		return *(textures[resourceId].get());
 	} else {
-		LOGE(boost::format("Couldn't lookup texture for %s") % resourceId);
+		LOGE("Couldn't lookup texture for " << resourceId);
 	}
 
 	auto resources = Application::getApplication().getResources();
 	if (!resources.exists(resourceId) ) {
-		LOGE(boost::format("RESOURCE DOES NOT EXIST! %s") % resourceId);
+		LOGE("RESOURCE DOES NOT EXIST! " << resourceId);
 	}
 
 	auto is = resources.openResource(resourceId);

@@ -34,13 +34,11 @@ void Camera::init() {
 		transformationValid = false;
 		transformationInverseValid = false;
 		aabbValid = false;
-//		LOGE("Detected view change.");
 	}));
 }
 
 const glm::mat4& Camera::getTransformation() const {
 	if (!transformationValid) {
-//		LOGE("Recalculating transformation");
 		transformation = projection * getMatrixInverse();
 		transformationValid = true;
 		transformationInverseValid = false;

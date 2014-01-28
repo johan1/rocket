@@ -260,7 +260,7 @@ OpenAlPlayer::AudioStreamer::AudioStreamer(std::shared_ptr<BufferLoader> const& 
 	alSourceQueueBuffers(sourceId, 1, &(*bufferId));
 	checkAlError("alSourceQueueBuffers, AL_BUFFER");
 
-	LOGD(boost::format("Set looping %d") % loop);
+	LOGD("Set looping " << loop);
 	alSourcei(sourceId, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
 	checkAlError("alSourcei, AL_LOOPING");
 

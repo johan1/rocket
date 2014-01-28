@@ -22,7 +22,7 @@ EglDisplay::EglDisplay(EGLNativeDisplayType displayId) {
 	EGLint minor;
 	auto result = eglInitialize(displayHandle, &major, &minor); // EGL_VERSION_1_0, EGL_VERSION_1_4);
 	if (result == EGL_TRUE) {
-		LOGD(boost::format("Successfully initialized display, major=%d, minor=%d") % major % minor);
+		LOGD("Successfully initialized display, major=" << major << ", minor=" << minor);
 	} else {
 		LOGE("Failed to initialize display");
 		throw EglException("Failed to initialize display");
@@ -126,7 +126,7 @@ static void getAttribValue(EGLDisplay display, EGLConfig config, EglAttribMap &a
 	if (result == EGL_TRUE) {
 		attribMap[attribName] = tmp;
 	} else {
-		LOGD(boost::format("Attribute %s not present in configuration") % eglAttribToString(attribName));
+		LOGD("Attribute " << eglAttribToString(attribName) << " not present in configuration");
 	}
 }
 

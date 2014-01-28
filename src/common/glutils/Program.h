@@ -70,22 +70,4 @@ namespace std {
 	};
 }
 
-/*
-inline
-std::string Program::getInfoLog() {
-	GLint logLength;
-
-	glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &logLength);
-	checkGlError("getProgramiv GL_INFO_LOG_LENGTH");
-
-	std::vector<char> logContent(logLength+1, 0);
-	glGetProgramInfoLog(handle, logLength+1, nullptr, &(logContent[0]));
-	checkGlError("getProgramInfoLog");
-	logContent[logLength] = '\0';
-
-	return std::string(&logContent[0]);
-}
-*/
-
-
 #endif

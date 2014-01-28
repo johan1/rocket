@@ -18,7 +18,7 @@ Program::Program(std::string const& vertexShaderSrc, std::string const& fragment
 
 Program::~Program() {
 	if (handle != 0) {
-		LOGD(boost::format("Deleting program %d") % handle);
+		LOGD("Deleting program " << handle);
 		glDeleteProgram(handle);
 	}
 }
@@ -38,7 +38,7 @@ GLuint Program::loadShader(GLenum shaderType, std::string const& source) {
                 char* buf = new char[infoLen]; // (char*) malloc(infoLen);
                 if (buf) {
                     glGetShaderInfoLog(shader, infoLen, 0, buf);
-                    LOGE(format("Could not compile shader %d:\n%s\n") % shaderType % buf);
+                    LOGE("Could not compile shader " << shaderType << ":\n" << buf << "%s");
 					delete[] buf;
                 }
                 glDeleteShader(shader);
@@ -72,7 +72,7 @@ GLuint Program::createProgram(std::string const& vertexSource, std::string const
                 char *buf = new char[bufLength];
                 if (buf) {
                     glGetProgramInfoLog(program, bufLength, 0, buf);
-                    LOGE(format("Could not link program:\n%s\n") % buf);
+                    LOGE("Could not link program:\n" << buf << "\n");
 					delete[] buf;
                 }
             }
@@ -88,8 +88,7 @@ GLuint Program::createProgram(std::string const& vertexSource, std::string const
 void Program::use() {
 	if (handle == 0) {
 		handle = createProgram(vertexShaderSrc, fragmentShaderSrc);
-		LOGD(boost::format("Created program %d") % handle);
-//		LOGD(boost::format("Program %d info: %s") % handle % getInfoLog());
+		LOGD("Created program " << handle);
 	}
 
 	glUseProgram(handle);

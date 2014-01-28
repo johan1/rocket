@@ -14,18 +14,11 @@ ControllerScene::ControllerScene(uint32_t defaultControllerId) :
 	registerHandler(HandlerBuilder<PointerEvent>::build(
 		[=](PointerEvent const& pe) -> bool {
 			if(pe.getActionType() == PointerEvent::ActionType::PRESSED) {
-//				LOGD(boost::format("Received pointer event %s") % pe);
 				for (auto& it : buttons) {
 					auto& button = it.second;
 
-					/*
-					LOGD(boost::format("Test if pointerevent %s hit button %d (x1=%f, y1=%f, x2=%f, y2=%f") % pe % 
-							button.buttonId % button.rect.bottomLeft.x % button.rect.bottomLeft.y
-							% button.rect.topRight.x % button.rect.topRight.y);
-					*/
 					if (button.rect.contains(pe.getCoordinate())) { // Button pressed?
 						if (button.pressCount == 0) {
-//							LOGD(boost::format("Injecting button press, pointer=%d, buttonId=%d") % pe.getPointerId() % button.buttonId);
 							Application::getApplication().post( // Deadlock since mutex is not re-entrent...
 									ControllerEvent(button.controllerId, button.buttonId, 255));
 						}
@@ -42,7 +35,6 @@ ControllerScene::ControllerScene(uint32_t defaultControllerId) :
 
 					(button.pressCount)--;
 					if (button.pressCount == 0) {
-//						LOGD(boost::format("Injecting button release, pointer=%d, buttonId=%d") % pe.getPointerId() % button.buttonId);
 						Application::getApplication().post(
 								ControllerEvent(button.controllerId, button.buttonId, 0));
 					}
