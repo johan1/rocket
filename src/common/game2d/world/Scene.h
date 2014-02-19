@@ -48,16 +48,16 @@ public:
 		this->groupBoxScale = groupBoxScale;
 	}
 
-	void schedule(std::function<void()> const& task) {
+	void schedule(std::function<ticks()> const& task) {
 		tasks.push_back(std::unique_ptr<SceneTask>(new SceneTask(task)));
 	}
 
-	void schedule(std::function<void()> const& task, ticks delay) {
+	void schedule(std::function<ticks()> const& task, ticks delay) {
 		tasks.push_back(std::unique_ptr<SceneTask>(new SceneTask(task, delay)));
 	}
 
 	template <typename Rep, typename Period>
-	void schedule(std::function<void()> const& task, boost::chrono::duration<Rep, Period> delay) {
+	void schedule(std::function<ticks()> const& task, boost::chrono::duration<Rep, Period> delay) {
 		schedule(task, boost::chrono::duration_cast<ticks>(delay));
 	}
 
@@ -74,11 +74,12 @@ public:
 
 private:
 	struct SceneTask {
-		std::function<void(void)> task;
+		std::function<ticks(void)> task;
 		ticks delay;
 
-		SceneTask(std::function<void()> const& task) : task(task), delay(1) {}
-		SceneTask(std::function<void()> const& task, ticks delay) : task(task), delay(delay) {
+		SceneTask(std::function<ticks()> const& task) : task(task), delay(1) {}
+
+		SceneTask(std::function<ticks()> const& task, ticks delay) : task(task), delay(delay) {
 			ROCKET_ASSERT_TRUE(delay > ticks::zero());
 		}
 	};

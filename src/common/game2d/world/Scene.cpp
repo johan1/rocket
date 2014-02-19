@@ -90,7 +90,7 @@ void Scene::update() {
 	for (auto& task : tasks) {
 		--task->delay;
 		if (task->delay == ticks::zero()) {
-			task->task();
+			task->delay = task->task();
 		}
 	}
 	tasks.erase(
