@@ -40,6 +40,8 @@ private:
 	void updateItems();
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

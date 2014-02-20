@@ -29,6 +29,9 @@ private:
 	const float height;
 };
 
-}}}
+}}
+
+using namespace resource::image; // Collapse
+}
 
 #endif // _ROCKET2D_IMAGE_ID_H_

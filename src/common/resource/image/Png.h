@@ -79,7 +79,9 @@ inline Bitmap<RGBAPixel>& Png::getBitmap() {
 	return *(bitmap.get());
 }
 
-}}}
+}}
+using namespace resource::image; // Collapse
+}
 
 #endif // _PNG_TEST_H_
 

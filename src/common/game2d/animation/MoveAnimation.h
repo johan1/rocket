@@ -141,6 +141,9 @@ std::shared_ptr<AnimationBuilder> moveTo(std::shared_ptr<Movable> const& movable
 // auto animation = animation::chain(moveAnimation, moveAnimationReversed);
 // Director::getDirector().addAnimation(animation);
 
-}}}
+}}
+
+using namespace game2d::animation; // Collapse
+}
 
 #endif

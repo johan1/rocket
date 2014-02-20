@@ -21,6 +21,9 @@ bool contains(Container const & c, Value const& v) {
 	return std::find(std::begin(c), std::end(c), v) != std::end(c);
 }
 
-}}
+}
+
+using namespace util;
+}
 
 #endif

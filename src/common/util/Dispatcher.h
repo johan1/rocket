@@ -146,6 +146,8 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<IInnerDispatcher>> innerDispatchers;
 };
 
-}}
+}
+using namespace util; // Collapse
+}
 
 #endif

@@ -30,6 +30,8 @@ private:
 	Type type;
 };
 
-}}
+}
+using namespace resource;
+}
 
 #endif

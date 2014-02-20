@@ -65,6 +65,8 @@ private:
 //	virtual glm::mat4 calcMatrix(glm::mat4 const& rotation, glm::vec3 const& translation, glm::vec3 const& scale) const;
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

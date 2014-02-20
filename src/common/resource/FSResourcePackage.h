@@ -15,6 +15,8 @@ private:
 	virtual std::shared_ptr<std::istream> openFileImpl(std::string const&);
 };
 
-}}
+}
+using namespace resource;
+}
 
 #endif

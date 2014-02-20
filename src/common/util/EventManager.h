@@ -114,5 +114,8 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<IInnerManager>> innerManagers;
 };
 
-}}
+}
+
+using namespace util; // Collapse
+}
 #endif

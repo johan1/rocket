@@ -49,6 +49,9 @@ private:
 
 };
 
-}}
+}
+
+using namespace util;
+}
 
 #endif

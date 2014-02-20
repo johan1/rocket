@@ -77,6 +77,9 @@ private:
 	virtual bool isPlayingImpl(uint32_t playId) const;
 };
 
-}}}
+}}
+
+using namespace resource::audio; // Collapse
+}
 
 #endif

@@ -28,6 +28,9 @@ template< typename Key, typename ... Types >
 struct pack_count : ::std::integral_constant< int,
 	::std::common_type< type_sum< ::std::is_same< Key, Types > > ... >::type::type::value > {};
 
-}}}
+}}
+
+namespace meta = util::meta; // Bring in meta
+}
 
 #endif

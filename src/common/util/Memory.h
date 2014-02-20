@@ -55,6 +55,9 @@ UniquePtr<T> createUniquePtr(T *t, Deleter &&deleter) {
 	return UniquePtr<T>(t, DynamicDeleter<T>(std::forward<Deleter>(deleter)));
 }
 
-}}
+}
+
+using namespace util;
+}
 
 #endif

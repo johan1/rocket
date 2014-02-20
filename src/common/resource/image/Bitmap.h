@@ -168,6 +168,8 @@ void const* Bitmap<PixelType>::getRawData() const {
 	return static_cast<void const*>(&(data[0]));
 }
 
-}}}
+}}
+using namespace resource::image; // Collapse
+}
 
 #endif // _BITMAP_H_

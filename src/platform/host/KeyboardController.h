@@ -23,6 +23,9 @@ private:
 	uint32_t controllerId;
 };
 
-}}
+}
+
+using namespace linux; // And collapse
+}
 
 #endif

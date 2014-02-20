@@ -34,6 +34,8 @@ private:
 	rocket::glutils::Location mvpMatrixLocation;
 };
 
-}}
+}
+using namespace graphics; // Collapse
+}
 
 #endif

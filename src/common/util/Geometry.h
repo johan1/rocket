@@ -183,7 +183,10 @@ constexpr float rad2deg(float rad) {
 	return rad/(2.0*M_PI) * 360.0;
 }
 
-}}
+}
+
+using namespace util;
+}
 
 std::ostream& operator<<(std::ostream& os, glm::mat4 const& m);
 

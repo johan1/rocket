@@ -16,6 +16,8 @@ struct InputRepeater {
 
 typedef rocket::util::Dispatcher<ControllerEvent, PointerEvent> InputDispatcher;
 
-}}
+}
+using namespace input; // Collapse
+}
 
 #endif

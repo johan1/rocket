@@ -97,6 +97,9 @@ private:
 	std::shared_ptr<Node> root;
 };
 
-}}
+}
+
+using namespace util;
+}
 
 #endif

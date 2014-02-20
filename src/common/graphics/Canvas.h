@@ -100,6 +100,8 @@ private:
 
 };
 
-}}
+}
+using namespace graphics; // Collapse
+}
 
 #endif

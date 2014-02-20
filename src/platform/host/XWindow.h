@@ -72,6 +72,9 @@ void XWindow::setEventHandler(long type, F &&f) {
 	setEventHandlerF(type, eventHandler);
 }
 
-}}
+}
+
+using namespace linux; // Collapse
+}
 #endif
 

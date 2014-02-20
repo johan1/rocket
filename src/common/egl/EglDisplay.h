@@ -52,7 +52,9 @@ inline void makeCurrent(EglDisplay &display, EglContext &context,
 	}
 }
 
-}}
+}
+using namespace egl; // Collapse
+}
 
 #endif
 

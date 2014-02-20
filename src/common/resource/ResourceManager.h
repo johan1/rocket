@@ -38,6 +38,8 @@ private:
 	std::string defaultId;
 };
 
-}}
+}
+using namespace resource;
+}
 
 #endif

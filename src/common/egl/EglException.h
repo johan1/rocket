@@ -23,6 +23,8 @@ private:
 	EGLint error;
 };
 
-}}
+}
+using namespace egl; // Collapse
+}
 
 #endif

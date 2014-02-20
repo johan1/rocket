@@ -27,6 +27,8 @@ private:
 	rocket::glutils::Location samplerLocation;
 };
 
-}}
+}
+using namespace graphics; // Collapse
+}
 
 #endif

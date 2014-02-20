@@ -75,5 +75,7 @@ private:
 	std::unordered_map<std::string, std::unique_ptr<IInnerRepeater>> innerRepeaters;
 };
 
-}}
+}
+using namespace util; // Collapse
+}
 #endif

@@ -45,7 +45,9 @@ inline std::ostream& operator<<(std::ostream& os, rocket::resource::ResourceId c
 	return os;
 }
 
-}}
+}
+using namespace resource;
+}
 
 namespace std {
 	template<>

@@ -35,6 +35,8 @@ private:
 };
 
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

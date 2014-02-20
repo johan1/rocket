@@ -19,7 +19,9 @@ private:
 	GLint glErrorCode;
 };
 
-}}
+}
+using namespace glutils; // Collapse
+}
 
 #endif
 

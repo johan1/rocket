@@ -30,6 +30,9 @@ private:
 	std::size_t position;
 };
 
-}}
+}
+
+using namespace util; // Collapse
+}
 
 #endif

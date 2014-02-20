@@ -115,7 +115,10 @@ namespace rocket { namespace util {
 		loge(format.str());
 	}
 	*/
-}}
+}
+
+using namespace util; // Collapse
+}
 
 // And finally some horrible horrible macros...
 #ifndef LOG_DISABLED

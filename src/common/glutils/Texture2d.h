@@ -88,6 +88,8 @@ void mapBitmapToTexture(rocket::resource::image::Bitmap<PixelType> const& bitmap
 	texture.pixelHeight = 1.0f/static_cast<float>(bitmap.getHeight());
 }
 
-}}
+}
+using namespace glutils; // Collapse
+}
 
 #endif

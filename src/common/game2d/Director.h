@@ -102,6 +102,8 @@ boost::optional<glm::vec4> const& Director::getViewPort() const {
 	return viewPort;
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

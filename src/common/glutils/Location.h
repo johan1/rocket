@@ -49,6 +49,8 @@ private:
 	mutable Program *program;
 };
 
-}}
+}
+using namespace glutils; // Collapse
+}
 
 #endif

@@ -138,7 +138,9 @@ private:
 	}
 };
 
-}}
+}
+using namespace util; // Collapse
+}
 
 namespace std {
     template<>

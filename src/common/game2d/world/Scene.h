@@ -137,6 +137,8 @@ void Scene::setZRenderOrder(bool zRenderingOrder) {
 	this->zRenderingOrder = zRenderingOrder;
 }
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

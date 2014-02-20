@@ -47,7 +47,9 @@ void checkGlError(std::string const& what);
 
 void printGLString(const char *name, GLenum s);
 
-}}
+}
+using namespace glutils; // Collapse
+}
 
 #endif
 

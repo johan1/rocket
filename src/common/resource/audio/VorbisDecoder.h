@@ -26,6 +26,8 @@ private:
 	virtual PcmInfo const& getPcmInfoImpl() const;
 };
 
-}}}
+}}
+using namespace resource::audio; // Collapse
+}
 
 #endif

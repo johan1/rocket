@@ -43,6 +43,8 @@ private:
 	ticks tickss;
 };
 
-}}}
+}}
+using namespace game2d::animation; // Collapse
+}
 
 #endif

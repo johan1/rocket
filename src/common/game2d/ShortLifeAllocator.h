@@ -22,6 +22,8 @@ std::vector<T, util::AllocatorAdapter<T>> makeShortLifeVector() {
 	return std::vector<T, util::AllocatorAdapter<T>>(getShortLifeAllocatorAdapter<T>());
 }
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

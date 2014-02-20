@@ -29,6 +29,8 @@ namespace rocket { namespace egl {
 	std::string& eglAttribToString(EGLint attrib);
 
 	std::string& eglErrorToString(EGLint error);
-}}
+}
+using namespace egl; // Collapse
+}
 
 #endif

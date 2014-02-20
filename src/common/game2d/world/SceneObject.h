@@ -93,6 +93,8 @@ private:
 	void invalidate(bool localChanges);
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

@@ -100,6 +100,8 @@ private:
 	virtual void renderImpl(graphics::Canvas &canvas);
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

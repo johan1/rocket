@@ -45,6 +45,8 @@ private:
 //	virtual PcmData loadPcmDataImpl(std::istream &is);
 };
 
-}}}
+}}
+using namespace resource::audio; // Collapse
+}
 
 #endif

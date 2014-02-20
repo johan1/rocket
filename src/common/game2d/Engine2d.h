@@ -85,6 +85,8 @@ rocket::glutils::ProgramPool& Engine2d::getProgramPool() {
 	return *programPool;
 }
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

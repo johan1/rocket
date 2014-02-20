@@ -21,6 +21,8 @@ private:
 	util::UniquePtr<void> context;
 };
 
-}}
+}
+using namespace egl; // Collapse
+}
 
 #endif

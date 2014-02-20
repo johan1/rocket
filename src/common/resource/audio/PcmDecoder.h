@@ -41,5 +41,7 @@ PcmInfo const& PcmDecoder::getPcmInfo() const {
 	return getPcmInfoImpl();
 };
 
-}}}
+}}
+using namespace resource::audio; // Collapse
+}
 #endif

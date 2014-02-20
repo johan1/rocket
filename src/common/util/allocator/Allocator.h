@@ -38,6 +38,9 @@ private:
 	DefaultAllocator() = default;
 };
 
-}}
+}
+
+using namespace util; // Collapse
+}
 
 #endif

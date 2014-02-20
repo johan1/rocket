@@ -57,7 +57,10 @@ inline
 std::string const& Program::getFragmentShaderSrc() const {
 	return fragmentShaderSrc;
 }
-}}
+}
+
+using namespace glutils; // Collapse
+}
 
 namespace std {
 	template<>

@@ -111,6 +111,8 @@ std::shared_ptr<std::istream> Zip::createStreamBuffer(std::shared_ptr<std::istre
 	return std::shared_ptr<std::istream> {stream, del};
 }
 
-}}
+}
+using namespace resource;
+}
 
 #endif // _ZIP_H_

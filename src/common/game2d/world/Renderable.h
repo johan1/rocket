@@ -20,6 +20,8 @@ private:
 	virtual void renderImpl(rocket::graphics::Canvas &canvas) = 0;
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

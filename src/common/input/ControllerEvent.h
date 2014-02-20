@@ -61,6 +61,8 @@ uint8_t ControllerEvent::getValue() const {
 	return value; 
 }
 
-}}
+}
+using namespace input;
+}
 
 #endif

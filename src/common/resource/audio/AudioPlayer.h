@@ -40,7 +40,10 @@ private:
 	std::unique_ptr<PlatformAudioPlayer> player;
 };
 
-}}}
+}}
+
+using namespace resource::audio; // Collapse
+}
 
 #endif
 

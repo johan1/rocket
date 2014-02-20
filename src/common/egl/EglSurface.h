@@ -24,6 +24,8 @@ private:
 	EGLDisplay displayHandle;
 };
 
-}}
+}
+using namespace egl; // Collapse
+}
 
 #endif

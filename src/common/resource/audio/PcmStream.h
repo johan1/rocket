@@ -34,6 +34,8 @@ private:
 	boost::atomic<bool> shuttingDown;
 };
 
-}}} 
+}}
+using namespace resource::audio; // Collapse
+}
 
 #endif

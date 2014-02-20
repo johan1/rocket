@@ -51,6 +51,8 @@ rocket::resource::image::ImageId const& Sprite::getImageId() const {
 	return imageId;
 }
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

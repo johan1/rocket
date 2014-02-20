@@ -71,6 +71,9 @@ private:
 	mutable bool matrixInverseValid;
 };
 
-}}
+}
+
+using namespace util; // Collapse
+}
 
 #endif

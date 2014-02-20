@@ -16,6 +16,8 @@ private:
 	virtual bool isValidImpl() const = 0;
 };
 
-}}}
+}}
+using namespace game2d::animation; // Collapse
+}
 
 #endif

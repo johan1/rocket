@@ -29,6 +29,8 @@ private:
 	glutils::Vertex6d vertices[4];
 };
 
-}}
+}
+using namespace graphics; // Collapse
+}
 
 #endif

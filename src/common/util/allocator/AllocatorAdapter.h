@@ -33,6 +33,9 @@ private:
 	Allocator &allocator;
 };
 
-}}
+}
+
+using namespace util; // Collapse
+}
 
 #endif

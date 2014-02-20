@@ -7,7 +7,8 @@
 #include <unordered_map>
 #include <memory>
 
-namespace rocket { namespace resource { namespace audio {
+namespace rocket {
+namespace resource { namespace audio {
 
 class SLESPlayer : public PlatformAudioPlayer {
 public:
@@ -60,6 +61,9 @@ private:
 //	virtual float getVolumeImpl(uint32_t playId) const;
 };
 
-}}}
+}
+using namespace resource::audio; // And collapse
+
+}}
 
 #endif 

@@ -21,6 +21,8 @@ private:
 	std::unordered_map<uint32_t, uint8_t> buttonState;
 };
 
-}}
+}
+using namespace input; // Collapse
+}
 
 #endif

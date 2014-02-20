@@ -48,7 +48,10 @@ private:
 
 std::ostream& operator<<(std::ostream &os, PointerEvent const& pointerEvent);
 
-}}
+}
+
+using namespace input;
+}
 
 #endif // _ROCKET2D_POINTER_EVENT_H_
 

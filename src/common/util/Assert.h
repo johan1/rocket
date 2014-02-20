@@ -25,7 +25,10 @@ void rocket_assert(std::string const& expression, T result, T expected) {
 
 void rocket_assert(std::string const& expression, bool result);
 
-}}
+}
+
+using namespace rocket; // Collapse
+}
 
 #define ROCKET_ASSERT_TRUE(expression) \
 	rocket::util::rocket_assert(#expression, (expression));

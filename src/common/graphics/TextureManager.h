@@ -18,6 +18,8 @@ private:
 	// std::unordered_map<rocket::resource::ResourceId, std::weak_ptr<rocket::glutils::Texture2d>> cachedTextures;
 };
 
-}}
+}
+using namespace graphics; // Collapse
+}
 
 #endif

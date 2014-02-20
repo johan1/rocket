@@ -110,6 +110,8 @@ private:
     boost::promise<void> p;
 };
 
-} }
+}
+using namespace concurrent; // Collapse
+}
 
 #endif

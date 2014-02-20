@@ -90,6 +90,9 @@ std::shared_ptr<ChainedAnimationBuilder> createChain(std::shared_ptr<AnimationBu
 	return builder;
 }
 
-}}}
+}}
+
+using namespace game2d::animation; // Collapse
+}
 
 #endif

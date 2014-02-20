@@ -78,7 +78,9 @@ float PlatformAudioPlayer::getVolume(uint32_t playId) const {
 }
 */
 
-}}}
+}}
+using namespace resource::audio; // Collapse
+}
 
 #endif
 

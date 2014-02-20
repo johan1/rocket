@@ -26,6 +26,8 @@ private:
 	virtual Particle generateImpl() = 0;
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

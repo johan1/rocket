@@ -37,6 +37,8 @@ private:
 	std::unordered_map<uint32_t, uint32_t> pointers;
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif

@@ -46,6 +46,9 @@ std::shared_ptr<Observer<T>> makeObserver(std::function<void(T const&)> const& c
 	return std::make_shared<Observer<T>>(callback);
 }
 
-}}
+}
+
+using namespace util; // Collapse
+}
 
 #endif

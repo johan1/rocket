@@ -24,6 +24,8 @@ private:
 	bool grouped;
 };
 
-}}
+}
+using namespace game2d; // Collapse
+}
 
 #endif
