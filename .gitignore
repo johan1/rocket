@@ -1,0 +1,6 @@
+*.swp
+out
+includes.list
+.clang_complete
+Makefile
+cscope.*
