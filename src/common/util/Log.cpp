@@ -66,11 +66,11 @@ void Logger::LoggerTask::operator()() {
 
 	std::cout << timeString << "." << msString << " " << tag << " ";
 	if (level == LogLevel::DEBUG) {
-		std::cout << "DEBUG: ";
+		std::cout << "DEBUG ";
 	} else if (level == LogLevel::WARNING) {
-		std::cout << "WARNING: ";
+		std::cout << "WARNING ";
 	} else if (level == LogLevel::ERROR) {
-		std::cout << "ERROR: ";
+		std::cout << "ERROR ";
 	}
 
 	std::cout << message << std::endl;

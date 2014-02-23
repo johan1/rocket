@@ -122,12 +122,27 @@ using namespace util; // Collapse
 
 // And finally some horrible horrible macros...
 #ifndef LOG_DISABLED
-	#define LOGD(MESSAGE) { std::ostringstream oss; oss << MESSAGE; rocket::util::logd(oss.str()); }
-	#define LOGW(MESSAGE) { std::ostringstream oss; oss << MESSAGE; rocket::util::logw(oss.str()); }
-	#define LOGE(MESSAGE) { std::ostringstream oss; oss << MESSAGE; rocket::util::loge(oss.str()); }
-	#define LOGDT(TAG, MESSAGE) { std::ostringstream oss; oss << MESSAGE; rocket::util::logd((TAG), oss.str()); }
-	#define LOGWT(TAG, MESSAGE) { std::ostringstream oss; oss << MESSAGE; rocket::util::logw((TAG), oss.str()); }
-	#define LOGET(TAG, MESSAGE) { std::ostringstream oss; oss << MESSAGE; rocket::util::loge((TAG), oss.str()); }
+
+inline std::string log_file_info(std::string file, int line) {
+	std::string::size_type offset = 0;
+
+	std::string::size_type new_offset = 0;
+	while ((new_offset = file.find("/", offset)) != std::string::npos) {
+		offset = new_offset + 1;
+	}
+
+	std::ostringstream oss;
+	oss << file.substr(offset, file.length() - offset) << ":" << line << " | ";
+
+	return oss.str(); 
+}
+
+	#define LOGD(MESSAGE) { std::ostringstream oss; oss << log_file_info(__FILE__, __LINE__) << MESSAGE; rocket::util::logd(oss.str()); }
+	#define LOGW(MESSAGE) { std::ostringstream oss; oss << log_file_info(__FILE__, __LINE__) << MESSAGE; rocket::util::logw(oss.str()); }
+	#define LOGE(MESSAGE) { std::ostringstream oss; oss << log_file_info(__FILE__, __LINE__) << MESSAGE; rocket::util::loge(oss.str()); }
+	#define LOGDT(TAG, MESSAGE) { std::ostringstream oss; oss << log_file_info(__FILE__, __LINE__) << MESSAGE; rocket::util::logd((TAG), oss.str()); }
+	#define LOGWT(TAG, MESSAGE) { std::ostringstream oss; oss << log_file_info(__FILE__, __LINE__) << MESSAGE; rocket::util::logw((TAG), oss.str()); }
+	#define LOGET(TAG, MESSAGE) { std::ostringstream oss; oss << log_file_info(__FILE__, __LINE__) << MESSAGE; rocket::util::loge((TAG), oss.str()); }
 	
 	// #define LOGD(MESSAGE) rocket::util::logd((MESSAGE))
 	// #define LOGW(MESSAGE) rocket::util::logw((MESSAGE))
