@@ -2,12 +2,20 @@
 
 namespace rocket { namespace glutils {
 
-size_t ProgramPool::getProgramKey(std::string const& fragmentShader, std::string const& vertexShader) {
-	size_t key = std::hash<std::string>()(fragmentShader);
-	key += std::hash<std::string>()(vertexShader);
+size_t ProgramPool::calculateProgramKey(std::string const& vertexShader, std::string const& fragmentShader) {
+	size_t key = std::hash<std::string>()(vertexShader);
+	key += std::hash<std::string>()(fragmentShader);
+	return key;
+}
 
+bool ProgramPool::hasProgram(size_t key) const {
+	return programs.find(key) != programs.end();
+}
+
+size_t ProgramPool::getProgramKey(std::string const& vertexShader, std::string const& fragmentShader) {
+	size_t key = calculateProgramKey(vertexShader, fragmentShader);
 	if (programs.find(key) == programs.end()) {
-		programs[key] = std::make_shared<Program>(fragmentShader, vertexShader);
+		programs[key] = std::make_shared<Program>(vertexShader, fragmentShader);
 	}
 
 	return key;

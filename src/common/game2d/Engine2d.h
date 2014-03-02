@@ -12,7 +12,9 @@
 #include "Director.h"
 #include "world/Scene.h"
 
+#include "../glutils/FrameBufferObject.h"
 #include "../glutils/ProgramPool.h"
+#include "../glutils/FBORenderer.h"
 
 namespace rocket { namespace game2d {
 
@@ -56,6 +58,12 @@ private:
 	SceneInputRepeater repeater;
 
 	std::unique_ptr<rocket::glutils::ProgramPool> programPool;
+	std::unique_ptr<rocket::FrameBufferObject> sceneFrameBufferObject;
+
+	GLsizei width;
+	GLsizei height;
+
+	DefaultFBORenderer fboRenderer;
 };
 
 template <typename Event>

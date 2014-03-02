@@ -42,11 +42,15 @@ void Engine2d::destroyed() {
 	Director::getDirector().removeAllScenes();
 	Director::getDirector().setViewPort(boost::optional<glm::vec4>());
 	programPool.reset(); // This should cause all gl programs to be destroyed
+	sceneFrameBufferObject.reset(); // Let's destroy out scene fbo
 }
 
 void Engine2d::surfaceChanged(uint32_t width, uint32_t height) {
 	glViewport(0, 0, width, height);
+	checkGlError("glViewport");
 
+	this->width = width;
+	this->height = height;
 
 	glm::vec4 viewPort(0, 0, width, height);
 	Director::getDirector().setViewPort(viewPort);
@@ -81,9 +85,27 @@ void Engine2d::update() {
 		director.removeAnimation(animationId);
 	}
 
-	glClear(GL_COLOR_BUFFER_BIT);
+	if (!sceneFrameBufferObject ||
+			sceneFrameBufferObject->getWidth() != width ||
+			sceneFrameBufferObject->getHeight() != height) {
+		sceneFrameBufferObject = std::unique_ptr<FrameBufferObject>(
+			new FrameBufferObject(width, height));
+	}
+
+	glClear(GL_COLOR_BUFFER_BIT); // Clear default fbo
 	for (auto &scene : scenes) {
+		auto scenePostRenderer = scene->getPostRenderer();
+		if (scenePostRenderer != nullptr) { // Let's draw to scene fbo to allow post rendering.
+			sceneFrameBufferObject->bind();
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear fbo
+		}
+
 		scene->render();
+
+		if (scenePostRenderer != nullptr) { // Let's call the set post renderer
+			sceneFrameBufferObject->unbind();
+			scenePostRenderer->render(*programPool, sceneFrameBufferObject->getTextureId(), width, height);
+		}
 	}
 }
 

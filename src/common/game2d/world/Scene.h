@@ -18,6 +18,8 @@
 #include "../../util/Assert.h"
 #include "../../util/GeometryMap.h"
 
+#include "../../glutils/FBORenderer.h"
+
 namespace rocket { namespace game2d {
 
 class Scene : public rocket::input::InputDispatcher {
@@ -68,6 +70,22 @@ public:
 		return camera;
 	}
 
+	void setPostRenderer(std::shared_ptr<FBORenderer> const& fboRenderer) {
+		this->fboRenderer = fboRenderer;
+	}
+
+	void clearPostRenderer() {
+		fboRenderer.reset();
+	}
+
+	FBORenderer* getPostRenderer() {
+		if (fboRenderer != nullptr) {
+			return fboRenderer.get();
+		} else {
+			return nullptr;
+		}
+	}
+
 	RenderObject* add(std::shared_ptr<Renderable> const& renderable, bool group);
 	RenderObject* add(std::shared_ptr<Renderable> const& renderable, bool group, RenderObject* parent);
 	void remove(RenderObject *ro);
@@ -108,6 +126,8 @@ private:
 
 	//! Grouped nodes are ordered in boxes with the dimension matching the dimension of the aab of the camera times
 	float groupBoxScale;
+
+	std::shared_ptr<FBORenderer> fboRenderer;
 
 	void updateRenderList();
 

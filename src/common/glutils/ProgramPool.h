@@ -10,10 +10,15 @@ namespace rocket { namespace glutils {
 
 class ProgramPool {
 public:
-	//! Retreive key to program with fragmentShader and vertexShader. 
-	size_t getProgramKey(std::string const& fragmentShader, std::string const& vertexShader);
+	static size_t calculateProgramKey(std::string const& vertexShader, std::string const& fragmentShader);
 
-	//! Fetch program with key.	
+	bool hasProgram(size_t programKey) const;
+
+	//! Retreive key to program with fragmentShader and vertexShader.
+	// TODO: We really should rename this to loadProgram or something better
+	size_t getProgramKey(std::string const& vertexShader, std::string const& fragmentShader);
+
+	//! Fetch a previously loaded program with key.
 	std::shared_ptr<Program> lookupProgram(size_t key);
 
 	//! Release program with key.
