@@ -66,8 +66,9 @@ void Scene::remove(RenderObject *ro) {
 
 void Scene::updateProjection() {
 	camera.updateProjection();
-	if (projectionChangeObserver) {
-		projectionChangeObserver();
+
+	for (auto const& observer : projectionChangedObservers) {
+		std::get<1>(observer)();
 	}
 
 	auto& aabb = camera.getAABB();

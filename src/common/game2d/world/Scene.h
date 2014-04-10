@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <stack>
+#include <tuple>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -20,11 +21,12 @@
 
 #include "../../glutils/FBORenderer.h"
 
+#include "../../util/StlConvenience.h"
+
 namespace rocket { namespace game2d {
 
 class Scene : public rocket::input::InputDispatcher {
 public:
-
 	Scene();
 
 	Scene(std::function<glm::mat4(glm::vec4 const&)> const& projectionFunction);
@@ -35,7 +37,18 @@ public:
 
 	void updateProjection();
 
-	void setOnProjectionChangeObserver(std::function<void()> const& observer);
+	uint32_t addOnProjectionChangedObserver(std::function<void()> observer) {
+		static uint32_t id = 0;
+		projectionChangedObservers.emplace_back(std::make_tuple(++id, observer));
+		return id;
+	}
+
+	void removeObProjectionChangedObserver(uint32_t id) {
+		util::erase_if(projectionChangedObservers,
+				[id](std::tuple<uint32_t, std::function<void()>> other) {
+			return id == std::get<0>(other);
+		});
+	}
 
 	glm::vec3 project(glm::vec3 const& worldCoordinate) const;
 
@@ -111,7 +124,8 @@ private:
 
 	// Camera management
 	Camera camera;
-	std::function<void()> projectionChangeObserver;
+
+	std::vector<std::tuple<uint32_t, std::function<void()>>> projectionChangedObservers;
 
 	// Task management
 	std::vector<std::unique_ptr<SceneTask>> tasks;
@@ -136,11 +150,6 @@ private:
 
 inline 
 void Scene::updateImpl() {}
-
-inline
-void Scene::setOnProjectionChangeObserver(std::function<void()> const& observer) {
-	this->projectionChangeObserver = observer;
-}
 
 inline
 glm::vec3 Scene::project(glm::vec3 const& worldCoordinate) const {
