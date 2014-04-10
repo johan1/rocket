@@ -1,0 +1,13 @@
+1. Use C++11 features where applicable.
+
+2. Prefer defining small methods in place, e.g. in header files class body.
+
+3. Avoid defining classes, such as vector, vector6d, rgbacolor. Using tuples might be possible in many cases,
+in other homogenous cases std::array or simple C array will do. You can always define add functions that maps to a give attribute.
+E.g.
+uint8_t& red(std::tuple<float, float, float, float> &t) { std::get<0>(t); }
+
+4. Always consider usage before finalizing definitions. A lesson learnt is the namespace hell that occurred in rocket2d. Where everything
+was nicely ordered into different namespaces which led to really awkward usage.
+
+
