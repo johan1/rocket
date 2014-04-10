@@ -23,6 +23,21 @@ Sprite::Sprite(ImageId const& imageId, float width, float height) : vertices(4),
 	radius = std::sqrt(width*width+height*height)/2.0f;
 }
 
+
+void Sprite::updateImage(rocket::ImageId const& imageId, float width, float height) {
+	this->updateImage(imageId);
+	this->updateImage(width, height);
+}
+
+void Sprite::updateImage(rocket::ImageId const& imageId) {
+	this->imageId = imageId;
+}
+
+void Sprite::updateImage(float width, float height) {
+	this->width = width;
+	this->height = height;
+}
+
 void Sprite::renderImpl(Canvas &canvas) {
 	auto& viewAabb = canvas.getAABB();
 

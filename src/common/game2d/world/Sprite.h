@@ -12,9 +12,13 @@ namespace rocket { namespace game2d {
 
 class Sprite : public Renderable { 
 public:
-	Sprite(rocket::resource::image::ImageId const& imageId, float width, float height);
+	Sprite(rocket::ImageId const& imageId, float width, float height);
 
-	rocket::resource::image::ImageId const& getImageId() const;
+	rocket::ImageId const& getImageId() const;
+
+	void updateImage(rocket::ImageId const& imageId, float width, float height);
+	void updateImage(rocket::ImageId const& imageId);
+	void updateImage(float width, float height);
 
 	float getWidth() const {
 		return width;
