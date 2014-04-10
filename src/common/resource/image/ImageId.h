@@ -22,11 +22,11 @@ public:
 	float getHeight() const { return height; } //! height in normalized coordinates.
 
 private:
-	const ResourceId resId;
-	const float x;
-	const float y;
-	const float width;
-	const float height;
+	ResourceId resId;
+	float x;
+	float y;
+	float width;
+	float height;
 };
 
 }}
