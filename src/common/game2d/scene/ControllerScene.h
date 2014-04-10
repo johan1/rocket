@@ -14,6 +14,8 @@ namespace rocket { namespace game2d {
 class ControllerScene : public Scene {
 public:
 	ControllerScene(uint32_t defaultControllerId);
+	ControllerScene(uint32_t defaultControllerId,
+			std::function<glm::mat4(glm::vec4 const&)> const &projectionFunction);
 
 	void addButton(uint32_t controllerId, uint32_t buttonId, rocket::util::AABox const& rect);
 	void addButton(uint32_t buttonId, rocket::util::AABox const& rect);
@@ -35,6 +37,8 @@ private:
 	std::unordered_map<uint32_t, Button> buttons;
 
 	std::unordered_map<uint32_t, uint32_t> pointers;
+
+	void init();
 };
 
 }

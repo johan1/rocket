@@ -9,8 +9,19 @@ using namespace rocket::util;
 
 namespace rocket { namespace game2d {
 
-ControllerScene::ControllerScene(uint32_t defaultControllerId) : 
+ControllerScene::ControllerScene(uint32_t defaultControllerId) :
 		defaultControllerId(defaultControllerId) {
+	init();
+}
+
+ControllerScene::ControllerScene(uint32_t defaultControllerId,
+		std::function<glm::mat4(glm::vec4 const&)> const& projectionMatrix) :
+		Scene(projectionMatrix),
+		defaultControllerId(defaultControllerId) {
+	init();
+}
+
+void ControllerScene::init() {
 	registerHandler(HandlerBuilder<PointerEvent>::build(
 		[=](PointerEvent const& pe) -> bool {
 			if(pe.getActionType() == PointerEvent::ActionType::PRESSED) {
