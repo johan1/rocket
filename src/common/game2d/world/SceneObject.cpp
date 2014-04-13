@@ -1,7 +1,6 @@
 #include "SceneObject.h"
 
 #include <glm/gtc/matrix_inverse.hpp>
-// #include "../../util/Log.h"
 
 namespace rocket { namespace game2d {
 

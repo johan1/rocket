@@ -22,6 +22,21 @@ Point createPoint(float x, float y, float z) {
 	return Point(x, y, z, 1.0f);
 }
 
+inline
+Point createPoint(glm::vec2 v) {
+	return Point(v.x, v.y, 0, 1.0f);
+}
+
+inline
+Point createPoint(glm::vec3 v) {
+	return Point(v.x, v.y, v.z, 1.0f);
+}
+
+inline
+Dimension newDimension(float w, float h, float d) {
+	return Dimension(w, h, d);
+}
+
 inline 
 float distance2(Point const& p1, Point const& p2) {
 	return (p1.x-p2.x)*(p1.x-p2.x) +

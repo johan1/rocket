@@ -4,6 +4,8 @@
 #include "../../input/ControllerEvent.h"
 #include "../../Application.h"
 
+#include "../../util/StlConvenience.h"
+
 using namespace rocket::input;
 using namespace rocket::util;
 
@@ -25,29 +27,37 @@ void ControllerScene::init() {
 	registerHandler(HandlerBuilder<PointerEvent>::build(
 		[=](PointerEvent const& pe) -> bool {
 			if(pe.getActionType() == PointerEvent::ActionType::PRESSED) {
-				for (auto& it : buttons) {
-					auto& button = it.second;
+				for (auto& button : buttons) {
+					auto pos = button->getGlobalPosition();
 
-					if (button.rect.contains(pe.getCoordinate())) { // Button pressed?
-						if (button.pressCount == 0) {
+					// TODO: Ok this is broken, but let us ignore transformations for now.
+					// Also, we need to handle depth in some manner...
+					auto p1 = createPoint(pos.x - button->getDimension().x/2.0f,
+							pos.y - button->getDimension().y/2.0f);
+					auto p2 = createPoint(pos.x + button->getDimension().x/2.0f,
+							pos.y + button->getDimension().y/2.0f);
+					AABox aabb(p1, p2);
+
+					if (aabb.contains(pe.getCoordinate())) { // Button pressed
+						if (button->pressCount == 0) {
 							Application::getApplication().post( // Deadlock since mutex is not re-entrent...
-									ControllerEvent(button.controllerId, button.buttonId, 255));
+									ControllerEvent(button->controllerId, button->buttonId, 255));
 						}
-						++(button.pressCount);
-						pointers[pe.getPointerId()] = button.buttonId;
+						++(button->pressCount);
+						pointers[pe.getPointerId()] = button.get();
 						return true;
 					}
 				}
 			} else if (pe.getActionType() != PointerEvent::ActionType::MOVED) { // RELEASED OR CANCEL
 				if (pointers.find(pe.getPointerId()) != pointers.end()) {
-					auto buttonId = pointers[pe.getPointerId()];
-					pointers.erase(pe.getPointerId());
-					auto& button = buttons[buttonId];
 
-					(button.pressCount)--;
-					if (button.pressCount == 0) {
+					auto button = pointers[pe.getPointerId()];
+					pointers.erase(pe.getPointerId());
+
+					(button->pressCount)--;
+					if (button->pressCount == 0) {
 						Application::getApplication().post(
-								ControllerEvent(button.controllerId, button.buttonId, 0));
+								ControllerEvent(button->controllerId, button->buttonId, 0));
 					}
 					return true;
 				}
@@ -57,22 +67,4 @@ void ControllerScene::init() {
 		}
 	));
 }
-
-void ControllerScene::addButton(uint32_t controllerId, uint32_t buttonId, rocket::util::AABox const& rect) {
-	buttons[buttonId] = Button(controllerId, buttonId, rect);
-}
-
-void ControllerScene::addButton(uint32_t buttonId, rocket::util::AABox const& rect) {
-	return addButton(defaultControllerId, buttonId, rect);
-}
-
-void ControllerScene::removeButton(uint32_t buttonId) {
-	buttons.erase(buttonId);
-}
-
-ControllerScene::Button::Button() : controllerId(0), buttonId(0), rect(createPoint(-1, -1, -1), createPoint(1, 1, 1)), pressCount(0) {}
-
-ControllerScene::Button::Button(uint32_t controllerId, uint32_t buttonId, rocket::util::AABox const& rect) :
-		controllerId(controllerId), buttonId(buttonId), rect(rect), pressCount(0) {}
-
 }}
