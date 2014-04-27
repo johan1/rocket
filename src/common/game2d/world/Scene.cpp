@@ -21,6 +21,9 @@ Scene::Scene(std::function<glm::mat4(glm::vec4 const&)> const& projectionFunctio
 
 Scene::~Scene() {
 	LOGD("Scene destroyed");
+	for (auto& renderObject : renderObjects) {
+		renderObject->removeAllObservers();
+	}
 }
 
 RenderObject *Scene::add(std::shared_ptr<Renderable> const& renderable, bool group) {
