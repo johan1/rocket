@@ -14,6 +14,7 @@
 
 namespace rocket { namespace util {
 
+// We could (should?) use an unique namespace here instead.
 namespace gmdetails {
 	struct BoxId {
 		int x;
@@ -82,7 +83,6 @@ public:
 		elementLocations.erase(element);
 
 		ROCKET_ASSERT_TRUE(!contains(element));
-		// return true;
 	}
 
 	void move(Element const& element, Point const& newLocation) {
@@ -95,9 +95,6 @@ public:
 			remove(element);
 			add(element, newLocation);
 		}
-//		LOGD(boost::format("Moved element from %s to %s") % getBox(oldLocation) % getBox(newLocation));
-
-//		return true;
 	}
 
 	void resize(Dimension const& boxDimension) {
@@ -146,10 +143,10 @@ namespace std {
     template<>
     struct hash<rocket::util::gmdetails::BoxId> {
 		std::size_t operator()(rocket::util::gmdetails::BoxId const& b) const {
-        	std::size_t hx = std::hash<int>()(b.x);
-        	std::size_t hy = std::hash<int>()(b.y);
-        	std::size_t hz = std::hash<int>()(b.z); // std::string>()(s.last_name);
-        	return hx ^ (hy << 1) ^ (hz << 2);
+			std::size_t hx = std::hash<int>()(b.x);
+			std::size_t hy = std::hash<int>()(b.y);
+			std::size_t hz = std::hash<int>()(b.z);
+			return hx ^ (hy << 1) ^ (hz << 2);
 		}
     };
 }
