@@ -33,6 +33,10 @@ public:
 				observers.end());
 	}
 
+	void removeAllObservers() {
+		observers.clear();
+	}
+
 protected:
 	virtual ~Observable() noexcept(true) = default;
 
