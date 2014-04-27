@@ -44,6 +44,7 @@ private:
     std::deque<std::unique_ptr<Task>> taskQueue;
 
     boost::mutex taskQueueMutex;
+	boost::condition_variable waitOnQueueEmptyCondition;
 
     void join();
 };
@@ -60,6 +61,12 @@ ThreadPool::submit(Function &&f, Args&&... args) {
 		boost::lock_guard<boost::mutex> lock(taskQueueMutex);
     	taskQueue.push_back(std::unique_ptr<Task>(st));
 	}
+
+	// Notify threads that queue has a new entry.
+	// One thread notification is sufficient. This way we will not have more threads
+	// running the necessary.
+	waitOnQueueEmptyCondition.notify_one();
+
     return future;
 }
 

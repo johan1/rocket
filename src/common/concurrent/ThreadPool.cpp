@@ -27,7 +27,8 @@ ThreadPool::ThreadPool(int numberOfWorkers) : isShuttingDown(false), mainThreadI
 #endif
             	(*task.get())();
 			} else {
-				boost::this_thread::yield();
+				boost::unique_lock<boost::mutex> lock(taskQueueMutex);
+				waitOnQueueEmptyCondition.wait(lock);
 			}
         }
     };
