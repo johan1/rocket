@@ -15,6 +15,7 @@ namespace game2d {
 class Renderable {
 public:
 	void render(rocket::graphics::Canvas &canvas) { renderImpl(canvas); } 
+	virtual ~Renderable() {}
 
 private:
 	virtual void renderImpl(rocket::graphics::Canvas &canvas) = 0;
