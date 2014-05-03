@@ -42,6 +42,7 @@ ThreadPool::~ThreadPool() {
     isShuttingDown = true;
 
 	try {
+		waitOnQueueEmptyCondition.notify_all();
     	for (auto& workerThread : workerThreads) {
         	workerThread.join();
     	}
