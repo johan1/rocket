@@ -2,8 +2,6 @@
 #include "EglException.h"
 #include <rocket/Log.h>
 
-using namespace rocket::util;
-
 namespace rocket { namespace egl {
 	EglSurface::EglSurface(EGLDisplay displayHandle, EGLConfig config, EGLNativeWindowType const& win,
 			EglAttribMap const& eglAttribMap) : displayHandle(displayHandle) {
@@ -15,7 +13,7 @@ namespace rocket { namespace egl {
 			throw EglException("Failed to acquire surface");
 		}
 
-		surface = createUniquePtr<void>(surfaceHandle, [displayHandle] (EGLSurface surfaceHandle) {
+		surface = unique_deleter_ptr<void>(surfaceHandle, [displayHandle] (EGLSurface surfaceHandle) {
 			auto result = eglDestroySurface(displayHandle, surfaceHandle);
 			if (result == EGL_TRUE) {
 				LOGD("Destroyed surface");

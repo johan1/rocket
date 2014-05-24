@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "EglAttribMap.h"
-#include "../util/Memory.h"
+#include "../Types.h"
 
 namespace rocket { namespace egl {
 class EglDisplay;
@@ -20,7 +20,7 @@ public:
 	void swapBuffers();
 
 private:
-	rocket::util::UniquePtr<void> surface;
+	unique_deleter_ptr<void> surface;
 	EGLDisplay displayHandle;
 };
 

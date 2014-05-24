@@ -3,8 +3,6 @@
 #include "EglException.h"
 #include <rocket/Log.h>
 
-using namespace rocket::util;
-
 namespace rocket { namespace egl {
 
 EglDisplay::EglDisplay(EGLNativeDisplayType displayId) {
@@ -28,28 +26,7 @@ EglDisplay::EglDisplay(EGLNativeDisplayType displayId) {
 		throw EglException("Failed to initialize display");
 	}
 
-/*
-	// Assigning to smart pointer
-	std::function<void(void *)> deleter = [displayHandle] (void *ptr) {
-		LOGD("Destructing");
-		if (ptr == nullptr) {
-			return;
-		}
-
-		auto result = eglTerminate(displayHandle);
-		if (result == EGL_TRUE) {
-			LOGD("Terminated display");
-		} else {
-			LOGE("Failed to terminate display, invalid display... something is really fishy");
-#ifndef NDEBUG
-			std::abort(); // Let's abort in debug build to find what happened.
-#endif
-		}
-		LOGD("Destructed");
-	};
-	display = UniquePtr<void>(displayHandle, deleter);
-*/
-	display = createUniquePtr<void>(displayHandle, [displayHandle](void *ptr) {
+	display = unique_deleter_ptr<void>(displayHandle, [displayHandle](void *ptr) {
 		LOGD("Destructing");
 		if (ptr == nullptr) {
 			return;

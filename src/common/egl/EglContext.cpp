@@ -1,8 +1,6 @@
 #include "EglContext.h"
 #include "EglException.h"
 
-using namespace rocket::util;
-
 namespace rocket { namespace egl {
 
 EglContext::EglContext(EGLDisplay display, EGLConfig config, EGLContext shared, EglAttribMap const& attribs) : displayHandle(display) {
@@ -11,7 +9,7 @@ EglContext::EglContext(EGLDisplay display, EGLConfig config, EGLContext shared, 
 		throw EglException("Failed to create context");
 	}
 
-	context = createUniquePtr<void>(contextHandle, [display] (EGLContext contextHandle) {
+	context = unique_deleter_ptr<void>(contextHandle, [display] (EGLContext contextHandle) {
 		auto success = eglDestroyContext(display, contextHandle);
 		if (success == EGL_TRUE) {
 			LOGD("Destroyed context");

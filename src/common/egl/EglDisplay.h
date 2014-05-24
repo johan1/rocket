@@ -7,6 +7,7 @@
 #include <vector>
 #include <tuple>
 
+#include "../Types.h"
 #include "EglException.h"
 #include "EglAttribMap.h"
 #include "EglContext.h"
@@ -36,7 +37,7 @@ public:
 	std::unique_ptr<EglContext> createContext(EGLConfig config, EGLContext shared, EglAttribMap const& attribs);
 
 private:
-	rocket::util::UniquePtr<void> display;
+	unique_deleter_ptr<void> display;
 };
 
 inline void makeCurrent(EglDisplay &display, EglContext &context,
