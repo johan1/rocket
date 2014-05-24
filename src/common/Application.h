@@ -15,8 +15,6 @@
 #include "input/PointerEvent.h"
 #include "resource/ResourceManager.h"
 #include "resource/audio/AudioPlayer.h"
-
-#include "util/Memory.h"
 #include "util/EventManager.h"
 
 namespace rocket {
