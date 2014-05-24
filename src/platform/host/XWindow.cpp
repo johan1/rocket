@@ -3,8 +3,7 @@
 #include <cstdlib>
 
 #include <algorithm>
-#include "../../common/util/Log.h"
-
+#include <rocket/Log.h>
 #include <X11/Xutil.h>
 
 #include <cstring>

@@ -7,7 +7,7 @@
 #include <memory>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../../common/util/Log.h"
+#include <rocket/Log.h>
 
 #include "../../common/Application.h"
 #include "../../common/egl/EglAttribMap.h"

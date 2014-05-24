@@ -8,7 +8,7 @@
 // #define DEBUG_GM 1
 
 #ifdef DEBUG_GM
-#include "Log.h"
+#include <rocket/Log.h>
 #include <iosfwd>
 #endif
 

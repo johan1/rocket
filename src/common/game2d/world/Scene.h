@@ -21,7 +21,7 @@
 
 #include "../../glutils/FBORenderer.h"
 
-#include "../../util/StlConvenience.h"
+#include <rocket/Algorithm.h>
 
 namespace rocket { namespace game2d {
 
@@ -44,7 +44,7 @@ public:
 	}
 
 	void removeObProjectionChangedObserver(uint32_t id) {
-		util::erase_if(projectionChangedObservers,
+		erase_if(projectionChangedObservers,
 				[id](std::tuple<uint32_t, std::function<void()>> other) {
 			return id == std::get<0>(other);
 		});

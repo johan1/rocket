@@ -5,7 +5,7 @@
 #include "ZipResourcePackage.h"
 
 #include <fstream>
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket { namespace resource {
 

@@ -1,6 +1,6 @@
 #include "ResourceException.h"
 #include "ResourceManager.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket { namespace resource {
 

@@ -14,7 +14,7 @@
 #include "animation/AnimationBuilder.h"
 #include "../resource/ResourceManager.h"
 #include "../resource/audio/AudioPlayer.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 #include "../input/Controller.h"
 
 #include "../glutils/ProgramPool.h"

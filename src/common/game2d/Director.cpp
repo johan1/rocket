@@ -2,7 +2,7 @@
 #include "Director.h"
 
 #include <algorithm>
-#include "../util/Log.h"
+#include <rocket/Log.h>
 #include "../input/ControllerEvent.h"
 
 using namespace rocket::game2d::animation;

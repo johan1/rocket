@@ -6,7 +6,7 @@
 
 #include "Application.h"
 #include "egl/EglDisplay.h"
-#include "util/Log.h"
+#include <rocket/Log.h>
 
 using namespace rocket::egl;
 using namespace rocket::resource;

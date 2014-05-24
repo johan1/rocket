@@ -1,7 +1,7 @@
 #include "EglAttribMap.h"
 
 #include <unordered_map>
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket { namespace egl {
 

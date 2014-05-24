@@ -1,6 +1,6 @@
 #include "SLESPlayer.h"
 
-#include "../../common/util/Log.h"
+#include <rocket/Log.h>
 
 #define SL_EXECUTE(FUN, ...) \
 	slExecute((boost::format("%s:%d") % __FILE__ % __LINE__).str(), FUN, __VA_ARGS__);

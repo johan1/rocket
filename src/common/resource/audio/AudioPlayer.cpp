@@ -6,7 +6,7 @@
 
 #include "../ResourceId.h"
 
-#include "../../util/Log.h"
+#include <rocket/Log.h>
 
 #include "../../Application.h"
 

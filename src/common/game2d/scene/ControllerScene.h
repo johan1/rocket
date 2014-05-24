@@ -10,7 +10,7 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 
-#include "../../util/StlConvenience.h"
+#include <rocket/Algorithm.h>
 
 namespace rocket { namespace game2d {
 //using ButtonId = std::array<uint32_t, 2>;
@@ -74,7 +74,7 @@ public:
 	}
 
 	void removeButton(ButtonObject* bo) {
-		util::erase_if(buttons, [bo] (std::unique_ptr<ButtonObject> const& other) {
+		erase_if(buttons, [bo] (std::unique_ptr<ButtonObject> const& other) {
 			return other.get() == bo;
 		});
 	}

@@ -1,5 +1,5 @@
 #include "Canvas.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket { namespace graphics {
 

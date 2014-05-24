@@ -1,6 +1,6 @@
 #include "CircleFadeOut.h"
 #include "glm/glm.hpp"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket {
 

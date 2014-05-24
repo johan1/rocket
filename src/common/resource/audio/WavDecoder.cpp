@@ -1,9 +1,7 @@
 #include "WavDecoder.h"
 
 #include <cstring>
-#include "../../util/Log.h"
-
-using namespace rocket::util;
+#include <rocket/Log.h>
 
 namespace rocket { namespace resource { namespace audio {
 

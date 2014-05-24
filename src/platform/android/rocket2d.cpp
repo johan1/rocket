@@ -12,7 +12,7 @@
 #include "../../common/resource/ResourceManager.h"
 #include "../../common/resource/ResourcePackage.h"
 #include "../../common/resource/ZipResourcePackage.h"
-#include "../../common/util/Log.h"
+#include <rocket/Log.h>
 #include "../../common/egl/EglDisplay.h"
 
 #include "SLESPlayer.h"

@@ -1,7 +1,7 @@
 #include "Menu.h"
 
 #include <algorithm>
-#include "../../util/Log.h"
+#include <rocket/Log.h>
 #include "../../util/Geometry.h"
 
 using namespace rocket::util;

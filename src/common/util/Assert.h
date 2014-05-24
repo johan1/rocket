@@ -1,7 +1,7 @@
 #ifndef _ROCKET_ASSERT_H_
 #define _ROCKET_ASSERT_H_
 
-#include "Log.h"
+#include <rocket/Log.h>
 
 #include <iostream>
 #include <stdexcept>

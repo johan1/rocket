@@ -2,7 +2,7 @@
 #include <boost/format.hpp>
 
 #include "GLException.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket { namespace glutils {
 

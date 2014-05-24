@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 #include "EglAttribMap.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket { namespace egl {
 

@@ -1,6 +1,6 @@
 #include "VorbisDecoder.h"
 
-#include "../../util/Log.h"
+#include <rocket/Log.h>
 
 #include <stdexcept>
 

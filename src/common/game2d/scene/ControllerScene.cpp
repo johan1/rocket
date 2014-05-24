@@ -4,7 +4,7 @@
 #include "../../input/ControllerEvent.h"
 #include "../../Application.h"
 
-#include "../../util/StlConvenience.h"
+#include <rocket/Algorithm.h>
 
 using namespace rocket::input;
 using namespace rocket::util;

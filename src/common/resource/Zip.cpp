@@ -1,6 +1,6 @@
 #include "Zip.h"
 #include "ResourceException.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 #include <cstdint>
 #include <istream>

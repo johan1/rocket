@@ -1,8 +1,7 @@
 #include "KeyboardController.h"
 
 #include "../../common/game2d/Director.h"
-#include "../../common/util/Log.h"
-
+#include <rocket/Log.h>
 #include <X11/keysym.h>
 
 using namespace rocket::game2d;

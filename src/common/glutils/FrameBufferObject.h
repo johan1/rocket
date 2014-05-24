@@ -2,7 +2,6 @@
 #define ROCKET_FRAMEBUFFEROBJECT_H
 
 #include <GLES2/gl2.h>
-#include "../util/Log.h"
 
 namespace rocket { namespace glutils {
 

@@ -4,7 +4,7 @@
 
 #include "Director.h"
 #include "world/Sprite.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 #include <algorithm>
 #include <memory>

@@ -6,7 +6,7 @@
 #include <boost/chrono.hpp>
 #include <boost/thread.hpp>
 
-#include "concurrent/ThreadPool.h"
+#include <rocket/ThreadPool.h>
 #include "egl/EglAttribMap.h"
 #include "egl/EglContext.h"
 #include "egl/EglDisplay.h"
@@ -18,8 +18,6 @@
 
 #include "util/Memory.h"
 #include "util/EventManager.h"
-
-#include "util/allocator/StoreAllocator.h"
 
 namespace rocket {
 
@@ -74,7 +72,7 @@ private:
 	static std::unique_ptr<Application> application;
 
 	// Render thread members
-	rocket::concurrent::ThreadPool renderThread;
+	ThreadPool renderThread;
 	boost::chrono::microseconds targetFrameDuration;
 	bool isPaused;
 

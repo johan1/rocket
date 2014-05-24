@@ -5,8 +5,6 @@
 #include <memory>
 #include <utility>
 
-#include "Log.h"
-
 namespace rocket { namespace util {
 
 //! Deleter, where deletion is delegated to specified delete functor

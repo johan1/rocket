@@ -1,6 +1,6 @@
 #include "FrameBufferObject.h"
 #include "Texture2d.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 #include "GLUtils.h"
 
 namespace rocket { namespace glutils {

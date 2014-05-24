@@ -1,6 +1,6 @@
 #include "EglSurface.h"
 #include "EglException.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 using namespace rocket::util;
 

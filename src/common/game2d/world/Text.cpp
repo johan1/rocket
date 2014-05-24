@@ -1,6 +1,6 @@
 #include "Text.h"
 
-#include "../../util/Log.h"
+#include <rocket/Log.h>
 #include "../Director.h"
 #include "../../graphics/Canvas.h"
 #include <glm/gtc/type_ptr.hpp>

@@ -4,7 +4,7 @@
 #include <exception>
 #include <stdexcept>
 
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket { namespace resource {
  

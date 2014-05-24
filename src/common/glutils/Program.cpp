@@ -5,7 +5,7 @@
 #include "GLUtils.h"
 
 #include <boost/format.hpp>
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 namespace rocket { namespace glutils {
 

@@ -1,11 +1,11 @@
 #include "Scene.h"
-#include "../../util/Log.h"
+#include <rocket/Log.h>
 
 #include <algorithm>
 #include <stack>
 #include "../../util/Geometry.h"
 
-#include "../../util/StlConvenience.h"
+#include <rocket/Algorithm.h>
 
 using namespace rocket::util;
 

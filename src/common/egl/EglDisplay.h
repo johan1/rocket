@@ -7,9 +7,6 @@
 #include <vector>
 #include <tuple>
 
-#include "../util/Log.h"
-//#include "../util/Memory.h"
-
 #include "EglException.h"
 #include "EglAttribMap.h"
 #include "EglContext.h"

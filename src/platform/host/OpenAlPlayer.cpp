@@ -1,10 +1,9 @@
 #include "OpenAlPlayer.h"
 
-#include "../../common/util/Log.h"
+#include <rocket/Log.h>
 
 #include <AL/al.h>
 
-using namespace rocket::util;
 using namespace boost;
 
 namespace rocket { namespace resource { namespace audio {

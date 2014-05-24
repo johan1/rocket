@@ -3,7 +3,7 @@
 #include "../Application.h"
 #include "../resource/ResourceManager.h"
 #include "../resource/image/Png.h"
-#include "../util/Log.h"
+#include <rocket/Log.h>
 
 using namespace rocket::glutils;
 using namespace rocket::resource;

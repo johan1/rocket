@@ -31,6 +31,11 @@ LOCAL_LIBNAME 		:= png15
 LOCAL_LIBVERSION	:= 1.15.3
 include $(BUILD_ROOT)/common/repo_dependency.mk
 
+# Rocket core
+LOCAL_LIBNAME 		:= rocketcore
+LOCAL_LIBVERSION	:= 0.0.1
+include $(BUILD_ROOT)/common/repo_dependency.mk
+
 ifeq ($(TARGET),host)
 SYSTEM_LIBRARIES += $(shell pkg-config x11 --libs)
 SYSTEM_LIBRARIES += $(shell pkg-config zlib --libs)

@@ -6,8 +6,7 @@
 #include "KeyboardController.h"
 #include "XWindow.h"
 
-
-#include "../../common/util/Log.h"
+#include <rocket/Log.h>
 #include "../../common/Application.h"
 #include "../../common/resource/FSResourcePackage.h"
 
