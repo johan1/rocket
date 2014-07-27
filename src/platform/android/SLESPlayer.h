@@ -57,8 +57,6 @@ private:
 	virtual void pauseAudioImpl(uint32_t playId);
 	virtual void stopAudioImpl(uint32_t playId);
 	virtual bool isPlayingImpl(uint32_t playId) const;
-//	virtual void setVolumeImpl(uint32_t playId, float volume);
-//	virtual float getVolumeImpl(uint32_t playId) const;
 };
 
 }

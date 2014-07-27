@@ -1,5 +1,6 @@
 #include "SLESPlayer.h"
 
+#include <rocket/Algorithm.h>
 #include <rocket/Log.h>
 
 #define SL_EXECUTE(FUN, ...) \
@@ -176,9 +177,7 @@ void SLESPlayer::stopAudioImpl(uint32_t playId) {
 
 		// Clean up book-keeping.
 		auto& buffer = buffers[player->bufferId];
-		buffer->playIds.erase( 
-				std::remove(buffer->playIds.begin(), buffer->playIds.end(), playId),
-				buffer->playIds.end());
+		erase(buffer->playIds, playId);
 		players.erase(playId);
 	}
 }
@@ -195,38 +194,5 @@ bool SLESPlayer::isPlayingImpl(uint32_t playId) const {
 		return false;
 	}
 }
-
-#if 0
-void SLESPlayer::setVolumeImpl(uint32_t /* playId */, float /* volume */) {
-	/*
-	auto it = players.find(playId);
-	if (it != players.end()) {
-		auto& player = it->second;
-		LOGD("SLES::loadAudioImpl impl");
-		SLmillibel level = 2*volume*player->maxVolumeLevel-player->maxVolumeLevel;
-		SL_EXECUTE((*player->volumeItf)->SetVolumeLevel, player->volumeItf, level);
-	} else {
-		LOGW(boost::format("Unable to find player with id %d when setting volume") % playId);
-	}
-	*/
-	LOGD("setVolume is not supported");
-}
-
-float SLESPlayer::getVolumeImpl(uint32_t /* playId */) const {
-	/*
-	auto it = players.find(playId);
-	if (it != players.end()) {
-		auto& player = it->second;
-		SLmillibel level;
-		SL_EXECUTE((*player->volumeItf)->GetVolumeLevel, player->volumeItf, &level);
-		return (player->maxVolumeLevel+level)/static_cast<float>(2 * player->maxVolumeLevel);
-	}
-	*/
-
-	LOGD("getVolume is not supported");
-	// LOGW(boost::format("Unable to find player with id %d when getting volume") % playId);
-	return 0;
-}
-#endif
 
 }}}
