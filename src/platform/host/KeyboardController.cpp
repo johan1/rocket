@@ -16,9 +16,13 @@ KeyboardController::KeyboardController() {
 	keymap[XK_Right] = button_id::RIGHT;
 	keymap[XK_Up] = button_id::UP;
 	keymap[XK_Down] = button_id::DOWN;
+	keymap[XK_Escape] = button_id::BUTTON_BACK;
 
 	keymap[XK_Control_L] = button_id::BUTTON1;
 	keymap[XK_space] = button_id::BUTTON2;
+
+	keymap[XK_F5] = button_id::DEBUG_RELOAD;
+	keymap[XK_F6] = button_id::DEBUG_DUMP_INFO;
 
 	for (auto& p : keymap) {
 		LOGD("Keyboard controller mapped key " << p.first << " to " << p.second);

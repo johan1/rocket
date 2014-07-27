@@ -25,7 +25,14 @@ namespace button_id {
 	uint32_t const BUTTON11 	= 14;
 	uint32_t const BUTTON12 	= 15;
 	uint32_t const CANCEL		= 16;
-	uint32_t const ACTION		= BUTTON1;
+	uint32_t const BUTTON_BACK	= 17;
+
+	// Button aliases
+	uint32_t const ACTION = BUTTON1;
+
+	// DEBUG STUFF
+	uint32_t const DEBUG_RELOAD 	  = 0xff01;
+	uint32_t const DEBUG_DUMP_INFO    = 0xff02;
 }
 
 class ControllerEvent {
