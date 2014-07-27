@@ -8,17 +8,21 @@ namespace rocket { namespace game2d {
 
 class SceneGroup {
 public:
-	virtual ~SceneGroup();
+	virtual ~SceneGroup() {
+		LOGD("SceneGroup destroyed");
+	}
 
 	void addScene(std::shared_ptr<Scene> const& scene);
 	void removeScene(std::shared_ptr<Scene> const& scene);
 	std::vector<std::shared_ptr<Scene>> const& getScenes() const;
 
 	void loaded() {
+		LOGD("SceneGroup loaded");
 		onLoaded();
 	}
 
 	void unloaded() {
+		LOGD("SceneGroup unloaded");
 		onUnloaded();
 	}
 

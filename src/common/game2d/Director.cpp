@@ -52,13 +52,13 @@ void Director::removeAllScenes() {
 }
 
 void Director::removeSceneGroup(std::shared_ptr<SceneGroup> const& sceneGroup) {
-	auto const& sceneGroupScenes = sceneGroup->getScenes();
-	scenes.erase(std::remove_if(scenes.begin(), scenes.end(), [&](std::shared_ptr<Scene> const& scene) {
-		return std::find(sceneGroupScenes.begin(), sceneGroupScenes.end(), scene) !=
-				sceneGroupScenes.end();
-	}), scenes.end());
-	sceneGroups.erase(std::remove(sceneGroups.begin(), sceneGroups.end(), sceneGroup));
-//	sceneGroups.remove(sceneGroup);
+	erase_if(scenes, contains_element(sceneGroup->getScenes()));
+	sceneGroup->unloaded();
+	erase(sceneGroups, sceneGroup);
+}
+
+void Director::removeSceneGroup(SceneGroup const* sceneGroup) {
+	removeSceneGroup(*find_if(sceneGroups, managed_by_sp(sceneGroup)));
 }
 
 std::vector<std::shared_ptr<Scene>>& Director::getScenes() {

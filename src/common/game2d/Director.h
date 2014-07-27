@@ -41,6 +41,7 @@ public:
 	void removeScene(std::shared_ptr<Scene> const& scene);
 	void removeAllScenes(); // TODO: This indicates that scenes should be managed by engine and not by director.
 	void removeSceneGroup(std::shared_ptr<SceneGroup> const& sceneGroup);
+	void removeSceneGroup(SceneGroup const* sceneGroup);
 
 	std::vector<std::shared_ptr<Scene>>& getScenes();
 	std::vector<std::shared_ptr<SceneGroup>>& getSceneGroups();

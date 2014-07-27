@@ -1,8 +1,6 @@
 #include "SceneGroup.h"
 namespace rocket { namespace game2d {
 
-SceneGroup::~SceneGroup() {}
-
 void SceneGroup::addScene(std::shared_ptr<Scene> const& scene) {
 	scenes.push_back(scene);
 }
