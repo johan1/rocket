@@ -29,24 +29,6 @@ namespace rocket {
 	extern void gameInit(); 
 }
 
-void setInitParams() {
-	// Application initialization, i.e. creating renderer configuration and setting application 
-	// callbacks.
-	EglAttribMap eglConfigAttr;
-	eglConfigAttr[EGL_RED_SIZE] = 8;
-	eglConfigAttr[EGL_GREEN_SIZE] = 8;
-	eglConfigAttr[EGL_BLUE_SIZE] = 8;
-	eglConfigAttr[EGL_BIND_TO_TEXTURE_RGBA] = 1;
-
-	EglAttribMap eglContextAttr;
-	eglContextAttr[EGL_CONTEXT_CLIENT_VERSION] = 2; // OpenGL ES 2.0
-
-	EglAttribMap eglSurfaceAttr;
-	Application::init(eglConfigAttr, eglContextAttr, eglSurfaceAttr);
-
-	Director::getDirector().setInitFunction(rocket::gameInit);
-}
-
 void postPointerEvent(PointerEvent::ActionType actionType,
 		int windowWidth, int windowHeight, int mouseX, int mouseY) {
 	float nx = static_cast<float>(2*mouseX-windowWidth)/static_cast<float>(windowWidth);
@@ -57,12 +39,9 @@ void postPointerEvent(PointerEvent::ActionType actionType,
 			actionType, nx, ny));
 }
 
-
-
 int main() {
 	LOGD("Hello rocket!");
-
-	setInitParams();
+	Director::getDirector().setInitFunction(rocket::gameInit);
 	
 	XApplication app;
 	XWindow *window = app.createWindow(
@@ -139,9 +118,7 @@ int main() {
 	ResourceManager rm {"assets"};
 	rm.addResourcePackage("assets", rp);
 
-	Application::getApplication().setResources(rm);
-	Application::getApplication().setPlatformAudioPlayer(
-			std::unique_ptr<PlatformAudioPlayer>(new OpenAlPlayer()));
+	Application::init(std::move(rm), std::unique_ptr<PlatformAudioPlayer>(new OpenAlPlayer()));
 	Application::getApplication().create(app.getDisplay());
 	Application::getApplication().resume();
 	Application::getApplication().surfaceCreated(window->getWindow());

@@ -5,6 +5,10 @@
 
 namespace rocket { namespace egl {
 
+static std::unordered_map<EGLint, std::string> createAttribLabels();
+
+static std::unordered_map<EGLint, std::string> attribLabels = createAttribLabels();
+
 EglAttribMap::EglAttribMap() {
 	attribs.push_back(EGL_NONE);
 }
@@ -59,7 +63,7 @@ std::ostream& operator<<(std::ostream& os, EglAttribMap eglAttribMap) {
 	return os;
 }
 
-static std::unordered_map<EGLint, std::string> createAttribLabels() {
+std::unordered_map<EGLint, std::string> createAttribLabels() {
 	std::unordered_map<EGLint, std::string> map;
 
 	// Config attributes
@@ -142,12 +146,21 @@ static std::unordered_map<EGLint, std::string> createErrorLabels() {
 	return map;
 }
 
-std::string& eglAttribToString(EGLint eglAttribName) {
-	static std::unordered_map<EGLint, std::string> attribLabels = createAttribLabels();
+std::string const& eglAttribToString(EGLint eglAttribName) {
 	return attribLabels[eglAttribName];
 }
 
-std::string& eglErrorToString(EGLint eglErrorName) {
+EGLint eglStringToAttrib(std::string const& name) {
+	for (auto& attrib : attribLabels) {
+		if (attrib.second == name) {
+			return attrib.first;
+		}
+	}
+	LOGE("Unable to find attribute: " << name);
+	return EGL_NONE;
+}
+
+std::string const& eglErrorToString(EGLint eglErrorName) {
 	static std::unordered_map<EGLint, std::string> errorLabels = createErrorLabels();
 	return errorLabels[eglErrorName];
 }

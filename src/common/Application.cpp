@@ -18,35 +18,43 @@ using namespace boost::chrono;
 
 namespace rocket {
 
-std::unique_ptr<Application> Application::application; // TODO: WTF is this??
+std::unique_ptr<Application> Application::application;
 
-Application::Application(std::unique_ptr<rocket::game2d::Engine2d> &&engine) :
+void Application::init(ResourceManager &&rm,
+		std::unique_ptr<PlatformAudioPlayer> && audioPlayer) {
+	Application::application = std::unique_ptr<Application>(
+			new Application(std::move(rm), std::move(audioPlayer)));
+}
+
+void Application::tearDown() {
+	Application::application.reset();
+}
+
+Application::Application(ResourceManager &&rm, std::unique_ptr<PlatformAudioPlayer> &&audioPlayer) :
 		renderThread {1},
 		targetFrameDuration {microseconds(1000000)/TARGET_FPS},
 		isPaused {true},
 		openglReady {false},
 		scheduleMainLoop {false},
-		engine {std::move(engine)} {}
+		resources(std::move(rm)),
+		audioPlayer(std::move(audioPlayer)) {
+	// If game.json exist we parse config from it.
+	if (resources.contains("game.json")) {
+		config = Config(*resources.openResource(ResourceId("game.json")));
+	}
+}
 
 Application& Application::getApplication() {
 	return *application;
-}
-
-void Application::setResources(rocket::resource::ResourceManager const& rm) {
-	resources = std::unique_ptr<ResourceManager>(new ResourceManager(rm));
-}
-
-void Application::setPlatformAudioPlayer(std::unique_ptr<PlatformAudioPlayer> audioPlayer) {
-	this->audioPlayer = std::unique_ptr<AudioPlayer>(new AudioPlayer(std::move(audioPlayer)));
 }
 
 void Application::create(EGLNativeDisplayType displayId) {
 	auto future = renderThread.submit([&]() {
 		LOGD("Application::create\n");
 
-		LOGD("Egl config attribs " << configAttribs);
-		LOGD("Egl context attribs " << contextAttribs);
-		LOGD("Egl surface attrivs " << surfaceAttribs);
+		LOGD("Egl config attribs " << config.getEglConfigAttr());
+		LOGD("Egl context attribs " << config.getEglContextAttr());
+		LOGD("Egl surface attrivs " << config.getEglSurfaceAttr());
 
 		// Selecting api. Assuming we're alone in this thread to work with egl. Thus no need to wait for native, and consider closing previous api.
 		eglBindAPI(EGL_OPENGL_ES_API);
@@ -58,14 +66,15 @@ void Application::create(EGLNativeDisplayType displayId) {
 		LOGD("EGL vendor: " << eglDisplay->queryString(EGL_VENDOR));
 		LOGD("EGL version: " << eglDisplay->queryString(EGL_VERSION));
 
+
 		// Picking EGL Config
-		eglConfig = eglDisplay->pickConfig(configAttribs);
+		eglConfig = eglDisplay->pickConfig(config.getEglConfigAttr());
 		EglAttribMap attribs = eglDisplay->getConfigAttribs(eglConfig);
 		eglMaxSwapInterval = attribs[EGL_MAX_SWAP_INTERVAL];
 		LOGD("Picked config: " << attribs);
 
 		// Creating context
-		eglContext = eglDisplay->createContext(eglConfig, contextAttribs);
+		eglContext = eglDisplay->createContext(eglConfig, config.getEglContextAttr());
 	});
 	future.wait();
 	LOGD("Application::create done");
@@ -73,10 +82,9 @@ void Application::create(EGLNativeDisplayType displayId) {
 
 void Application::destroy() {
 	auto future = renderThread.submit([&]() {
-		engine->destroyed();
+		engine.destroyed();
 		openglReady = false;
 
-		resources.reset();
 		eglContext.reset();
 		eglDisplay.reset();
 		LOGD("Application::destroy");
@@ -91,7 +99,7 @@ void Application::pause() {
 		isPaused = true;
 	
 		if (openglReady) {
-			engine->paused();
+			engine.paused();
 		}
 	});
 
@@ -105,7 +113,7 @@ void Application::resume() {
 		isPaused = false;
 
 		if (openglReady) {
-			engine->resumed();
+			engine.resumed();
 		}
 	});
 	future.wait();
@@ -115,7 +123,7 @@ void Application::resume() {
 void Application::surfaceCreated(EGLNativeWindowType windowId) {
 	auto future = renderThread.submit([&]() {
 		LOGD("Application::surfaceCreated");
-		eglSurface = eglDisplay->createSurface(eglConfig, windowId, surfaceAttribs);
+		eglSurface = eglDisplay->createSurface(eglConfig, windowId, config.getEglSurfaceAttr());
 
 		scheduleMainLoop = true;
 	});
@@ -140,7 +148,7 @@ void Application::surfaceChanged(EGLNativeWindowType, int, int width, int height
 		LOGD("Surface " << eglAttribToString(EGL_HEIGHT) << "=" << eglSurface->query(EGL_HEIGHT));
 		LOGD("Surface " << eglAttribToString(EGL_SWAP_BEHAVIOR) << "=" << eglSurface->query(EGL_SWAP_BEHAVIOR));
 
-		engine->surfaceChanged(width, height);
+		engine.surfaceChanged(width, height);
 
 		if (scheduleMainLoop) {
 			renderThread.submit([this] { // Start looping
@@ -171,18 +179,18 @@ void Application::mainLoop() {
 		}
 
 		if (!openglReady) {
-			engine->created();
-			engine->resumed();
+			engine.created();
+			engine.resumed();
 			openglReady = true;
 		}
 
 		// Dispatching input events
 		{
 			lock_guard<boost::recursive_mutex> lock(eventMutex);
-			engine->dispatchInputEvents();
+			engine.dispatchInputEvents();
 		}
 
-		engine->update();
+		engine.update();
 
 		eglSurface->swapBuffers();
 

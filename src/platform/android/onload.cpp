@@ -35,21 +35,7 @@ jint JNI_OnLoad(JavaVM* vm, void* /* reserved */) {
 	}
 	LOGD("libapp.so OnLoad");
 
-	// Application initialization, i.e. creating renderer configuration and setting application 
-	// callbacks.
-	EglAttribMap eglConfigAttr;
-	eglConfigAttr[EGL_RED_SIZE] = 8;
-	eglConfigAttr[EGL_GREEN_SIZE] = 8;
-	eglConfigAttr[EGL_BLUE_SIZE] = 8;
-	eglConfigAttr[EGL_RENDERABLE_TYPE] = EGL_OPENGL_ES2_BIT;
-
-	EglAttribMap eglContextAttr;
-	eglContextAttr[EGL_CONTEXT_CLIENT_VERSION] = 2; // OpenGL ES 2.0
-
-	EglAttribMap eglSurfaceAttr;
-
-	Application::init(eglConfigAttr, eglContextAttr, eglSurfaceAttr);
- 
+	// Setting init function which is to be implemented by game
 	Director::getDirector().setInitFunction(rocket::gameInit);
 	
 	return JNI_VERSION_1_4;

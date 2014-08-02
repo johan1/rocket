@@ -45,9 +45,7 @@ JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_activityCreated
 	ResourceManager rm {"assets"};
 	rm.addResourcePackage("assets", rp);
 
-	Application::getApplication().setResources(rm);
-	Application::getApplication().setPlatformAudioPlayer(std::unique_ptr<PlatformAudioPlayer>(new SLESPlayer()));
-
+	Application::init(std::move(rm), std::unique_ptr<PlatformAudioPlayer>(new SLESPlayer()));
 	Application::getApplication().create(EGL_DEFAULT_DISPLAY);
 }
 
@@ -61,6 +59,7 @@ JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_activityResumed
 
 JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_activityDestroyed(JNIEnv*, jobject) {
 	Application::getApplication().destroy();
+	Application::tearDown();
 }
 
 JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_surfaceCreated(JNIEnv * env, jobject, jobject surface) {

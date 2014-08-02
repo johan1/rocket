@@ -26,9 +26,11 @@ namespace rocket { namespace egl {
 
 	// EglAttribMap getAttribMap(EGLDisplay display, EGLConfig config);
 
-	std::string& eglAttribToString(EGLint attrib);
+	std::string const& eglAttribToString(EGLint attrib);
 
-	std::string& eglErrorToString(EGLint error);
+	EGLint eglStringToAttrib(std::string const& name);
+
+	std::string const& eglErrorToString(EGLint error);
 }
 using namespace egl; // Collapse
 }
