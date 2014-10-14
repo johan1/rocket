@@ -7,6 +7,10 @@
 #include "XWindow.h"
 
 #include <rocket/Log.h>
+#include <rocket/ThreadPool.h>
+
+#include <boost/thread.hpp>
+
 #include "../../common/Application.h"
 #include "../../common/resource/FSResourcePackage.h"
 
@@ -14,6 +18,8 @@
 #include "../../common/egl/EglAttribMap.h"
 #include "../../common/input/PointerEvent.h"
 #include "OpenAlPlayer.h"
+
+#include "GamepadManager.h"
 
 using namespace std;
 
@@ -123,9 +129,24 @@ int main() {
 	Application::getApplication().resume();
 	Application::getApplication().surfaceCreated(window->getWindow());
 
+	// Gamepad management.
+	ThreadPool gamepadControllerThread{1};
+	boost::atomic<bool> pollControllerEvents{true};
+	gamepadControllerThread.submit([&] {
+		GamepadManager manager;
+		while (pollControllerEvents.load()) {
+			auto event = manager.pollControllers();
+			if (event) {
+				Application::getApplication().post(event.get());
+			} else { // No events lets sleep for a while
+				boost::this_thread::sleep_for(ticks{1});
+			}
+		}
+	});
+
 	// Since this is blocking and is responsible for dispatching the above
 	// lambdas are allowed to capture scope by reference.
 	app.runEventDispatcher();
-
+	pollControllerEvents.store(false);
 	return 0;
 }

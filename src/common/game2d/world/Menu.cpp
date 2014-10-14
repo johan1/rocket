@@ -21,7 +21,7 @@ Menu::Menu(rocket::resource::ResourceId const& font) : Menu(font, 32, 0x808080ff
 
 Menu::Menu(rocket::resource::ResourceId const& font,
 		uint32_t fontSize, uint32_t normalFontColor, uint32_t selectedFontColor) : Scene(createProjectionFunction()),
-		font(font), fontSize(fontSize), normalFontColor(normalFontColor), selectedFontColor(selectedFontColor) {
+		font(font), fontSize(fontSize), normalFontColor(normalFontColor), selectedFontColor(selectedFontColor), selectedIndex(0) {
 
 	// Creating pointer event callback.
 	registerHandler(HandlerBuilder<PointerEvent>::build(
