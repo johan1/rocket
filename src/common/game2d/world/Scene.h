@@ -103,6 +103,10 @@ public:
 	RenderObject* add(std::shared_ptr<Renderable> const& renderable, bool group, RenderObject* parent);
 	void remove(RenderObject *ro);
 
+	util::AABox const& getViewport() const {
+		return camera.getAABB();
+	}
+
 private:
 	struct SceneTask {
 		std::function<ticks(void)> task;

@@ -41,7 +41,10 @@ public:
 
 	void drawSegment(glm::vec4 const& vertex1, glm::vec4 const& vertex2, glutils::RGBAColor const& color);
 
+	// TODO: Seperate text primitive from text renderable. Move text into graphics directory.
 	void drawText(rocket::game2d::Text const& text); // We should move text into this namespace.
+
+	void drawText(rocket::game2d::Text const& text, glm::vec3 const& offset); // We should move text into this namespace.
 
 	void drawTexture(std::vector<glutils::Vertex6d> const& vertices, glutils::Texture2d const& texture, bool blend);
 

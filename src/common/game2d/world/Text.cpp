@@ -13,7 +13,7 @@ using namespace rocket::game2d;
 namespace rocket { namespace game2d {
 
 Text::Text(std::string const& text, float height, ResourceId const& font, uint32_t fontSize, uint32_t fontColor) :
-		text(text), height(height), font(font), fontSize(fontSize), fontColor(fontColor) {
+		text(text), height(height), font(font), fontSize(fontSize), fontColor(fontColor), alignment{} {
 	updateGlyphMap();
 }
 

@@ -56,6 +56,11 @@ void Canvas::drawText(game2d::Text const& text) {
 	textRenderer.drawText(text);
 }
 
+void Canvas::drawText(game2d::Text const& text, glm::vec3 const& offset) {
+	prepareTextRenderer();
+	textRenderer.drawText(text, offset);
+}
+
 void Canvas::prepareTextureRenderer() {
 	if (currentRenderer != Renderer::TEXTURE_RENDERER) {
 		currentRenderer = Renderer::TEXTURE_RENDERER;

@@ -51,7 +51,7 @@ int main() {
 	
 	XApplication app;
 	XWindow *window = app.createWindow(
-			PointerMotionMask| ButtonPressMask| ButtonReleaseMask | KeyPressMask | KeyReleaseMask |
+			PointerMotionMask| ButtonPressMask| ButtonReleaseMask | FocusChangeMask | KeyPressMask | KeyReleaseMask |
 			StructureNotifyMask);
 
 	int windowWidth = 0;
@@ -62,6 +62,8 @@ int main() {
 	int mouseX = 0;
 	int mouseY = 0;
 	int mouseButton = -1;
+
+	boost::atomic<bool> windowFocused{true};
 	window->setEventHandler(MotionNotify, [&] (XEvent const& event) {
 		mouseX = event.xmotion.x;
 		mouseY = event.xmotion.y;
@@ -81,6 +83,21 @@ int main() {
 			mousePointerPressed = false;
 			postPointerEvent(PointerEvent::ActionType::RELEASED, windowWidth, windowHeight, mouseX, mouseY);
 			mouseButton = -1;
+		}
+	});
+	window->setEventHandler(FocusIn, [&] (XEvent const&) {
+		if (!windowFocused) {
+			LOGD("Window focused");
+			Application::getApplication().resume();
+			windowFocused = true;
+		}
+	});
+
+	window->setEventHandler(FocusOut, [&] (XEvent const&) {
+		if (windowFocused) {
+			LOGD("Window not focused");
+			Application::getApplication().pause();
+			windowFocused = false;
 		}
 	});
 
@@ -137,7 +154,9 @@ int main() {
 		while (pollControllerEvents.load()) {
 			auto event = manager.pollControllers();
 			if (event) {
-				Application::getApplication().post(event.get());
+				if (windowFocused) {
+					Application::getApplication().post(event.get());
+				}
 			} else { // No events lets sleep for a while
 				boost::this_thread::sleep_for(ticks{1});
 			}

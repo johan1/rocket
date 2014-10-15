@@ -14,6 +14,7 @@ public:
 	TextRenderer();
 	void use();
 	void pushMvpMatrix(glm::mat4 const& mvpMatrix);
+	void drawText(game2d::Text const& text, glm::vec3 const& offset);
 	void drawText(game2d::Text const& text);
 
 private:
