@@ -53,7 +53,7 @@ XApplication::~XApplication() {
 
 XWindow *XApplication::createWindow(long eventMask) {
 	int screen = DefaultScreen(display);
-	
+
 	// create window
 	Window window = XCreateSimpleWindow(display, 
 		RootWindow(display, screen), // Parent
@@ -66,8 +66,8 @@ XWindow *XApplication::createWindow(long eventMask) {
 
 	XSetWindowAttributes xattr;
 	xattr.override_redirect = false;
-    XChangeWindowAttributes (display, window, CWOverrideRedirect, &xattr);
 
+    XChangeWindowAttributes (display, window, CWOverrideRedirect, &xattr);
 	XSetWMProtocols(display, window, &deleteWindowAtom, 1);
 
 	// Propagate all events, we filter on event type.
@@ -132,7 +132,7 @@ std::shared_ptr<char> XApplication::getAtomName(Atom atom) const {
 	});
 }
 
-XWindow::XWindow(Display *display, Window window) : display(display), window(window) {}
+XWindow::XWindow(Display *display, Window window) : display(display), window(window), fullscreen(false) {}
 
 XWindow::~XWindow() {
 	XDestroyWindow(display, window);
@@ -147,7 +147,28 @@ void XWindow::dispatchEvent(XEvent const& event) {
 void XWindow::setVisible(bool visible) {
 	if(visible) {
 		/* map (show) the window */
-		XMapWindow(display, window);	
+		XMapWindow(display, window);
+
+		if (fullscreen) {
+			auto screen = DefaultScreen(display);
+			auto rootWindow = RootWindow(display, screen);
+			XEvent	event;
+
+			auto x11_state_atom	= XInternAtom(display, "_NET_WM_STATE", False);
+			auto x11_fs_atom = XInternAtom(display, "_NET_WM_STATE_FULLSCREEN", False);
+
+			event.xclient.type			= ClientMessage;
+			event.xclient.serial		= 0;
+			event.xclient.send_event	= True;
+			event.xclient.window		= window;
+			event.xclient.message_type	= x11_state_atom;
+			event.xclient.format		= 32;
+			event.xclient.data.l[ 0 ]	= 1;
+			event.xclient.data.l[ 1 ]	= x11_fs_atom;
+			event.xclient.data.l[ 2 ]	= 0;
+
+			XSendEvent(display, rootWindow, False, SubstructureRedirectMask | SubstructureNotifyMask, &event);
+		}
 	} else {
 		/* unmap (hide) the window */
 		XUnmapWindow(display, window);

@@ -17,10 +17,13 @@ public:
 	Config();
 	Config(std::istream &);
 
+	bool launchFullscreenWindow() const { return fullscreenWindow; }
+
 private:
 	EglAttribMap eglConfigAttr;
 	EglAttribMap eglContextAttr;
 	EglAttribMap eglSurfaceAttr;
+	bool fullscreenWindow;
 
 	void defaultEglInit();
 

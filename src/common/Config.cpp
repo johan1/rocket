@@ -6,11 +6,11 @@
 
 namespace rocket {
 
-Config::Config() {
+Config::Config() : fullscreenWindow(false) {
 	defaultEglInit();
 }
 
-Config::Config(std::istream &jsonStream) {
+Config::Config(std::istream &jsonStream) : fullscreenWindow(false) {
 	Json::Value root;
 	Json::Reader reader;
 	reader.parse(jsonStream, root);
@@ -31,6 +31,14 @@ Config::Config(std::istream &jsonStream) {
 		loadEglAttribs(eglSurfaceAttr, eglSurface);
 	} else {
 		defaultEglInit();
+	}
+
+	Json::Value windowRoot = root["window"];
+	if (!windowRoot.isNull()) {
+		fullscreenWindow = windowRoot["fullscreen"].asBool();
+		LOGD("Loaded window config fullscreen: " << fullscreenWindow);
+	} else {
+		LOGD("No window config");
 	}
 }
 

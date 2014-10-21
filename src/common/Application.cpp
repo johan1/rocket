@@ -39,7 +39,7 @@ Application::Application(ResourceManager &&rm, std::unique_ptr<PlatformAudioPlay
 		resources(std::move(rm)),
 		audioPlayer(std::move(audioPlayer)) {
 	// If game.json exist we parse config from it.
-	if (resources.contains("game.json")) {
+	if (resources.exists(ResourceId("game.json"))) {
 		config = Config(*resources.openResource(ResourceId("game.json")));
 	}
 }

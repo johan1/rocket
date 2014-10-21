@@ -25,10 +25,19 @@ public:
 
 	Window getWindow() { return window; }
 
+	void setFullscreen(bool fullscreen) {
+		this->fullscreen = fullscreen;
+	}
+	
+	bool isFullscreen() const {
+		return fullscreen;
+	}
+
 private:
 	std::unordered_map<long, std::function<void(XEvent const&)>> eventHandlers;
 	Display *display; // The x display	
 	Window window; // The x window
+	bool fullscreen;
 
 	// Prohibit copy constructor and assignment operator.
 	XWindow(XWindow const& rhs);

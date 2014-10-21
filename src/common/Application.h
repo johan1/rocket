@@ -56,6 +56,8 @@ public:
 
 	rocket::game2d::Engine2d& getEngine() { return engine; }
 
+	Config const& getConfig() const { return config; }
+
 private:
 	typedef rocket::util::EventManager<rocket::input::PointerEvent> InputManager;
 

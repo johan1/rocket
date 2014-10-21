@@ -135,13 +135,15 @@ int main() {
 		}
 	});
 
-	window->setVisible(true);
-
 	std::shared_ptr<ResourcePackage> rp = std::make_shared<FSResourcePackage>("./assets");
 	ResourceManager rm {"assets"};
 	rm.addResourcePackage("assets", rp);
 
 	Application::init(std::move(rm), std::unique_ptr<PlatformAudioPlayer>(new OpenAlPlayer()));
+
+	window->setFullscreen(Application::getApplication().getConfig().launchFullscreenWindow());
+	window->setVisible(true);
+
 	Application::getApplication().create(app.getDisplay());
 	Application::getApplication().resume();
 	Application::getApplication().surfaceCreated(window->getWindow());
