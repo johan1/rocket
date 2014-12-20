@@ -9,6 +9,7 @@
 #include <rocket/Log.h>
 #include <rocket/ThreadPool.h>
 
+#include <boost/chrono.hpp>
 #include <boost/thread.hpp>
 
 #include "../../common/Application.h"
@@ -63,6 +64,8 @@ int main() {
 	int mouseY = 0;
 	int mouseButton = -1;
 
+	boost::mutex windowFocusedMutex;
+	boost::condition_variable windowFocusedCondition;
 	boost::atomic<bool> windowFocused{true};
 	window->setEventHandler(MotionNotify, [&] (XEvent const& event) {
 		mouseX = event.xmotion.x;
@@ -86,19 +89,23 @@ int main() {
 		}
 	});
 	window->setEventHandler(FocusIn, [&] (XEvent const&) {
+		boost::unique_lock<boost::mutex> lock(windowFocusedMutex);
 		if (!windowFocused) {
 			LOGD("Window focused");
 			Application::getApplication().resume();
-			windowFocused = true;
 		}
+		windowFocused.store(true);
+		windowFocusedCondition.notify_all();
 	});
 
 	window->setEventHandler(FocusOut, [&] (XEvent const&) {
+		boost::unique_lock<boost::mutex> lock(windowFocusedMutex);
 		if (windowFocused) {
 			LOGD("Window not focused");
 			Application::getApplication().pause();
-			windowFocused = false;
 		}
+		windowFocused.store(false);
+		windowFocusedCondition.notify_all();
 	});
 
 	// Keyboard controller
@@ -151,12 +158,23 @@ int main() {
 	// Gamepad management.
 	ThreadPool gamepadControllerThread{1};
 	boost::atomic<bool> pollControllerEvents{true};
+
 	gamepadControllerThread.submit([&] {
 		GamepadManager manager;
 		while (pollControllerEvents.load()) {
+			bool dropEvents = false;
+			if (!windowFocused.load()) {
+				boost::unique_lock<boost::mutex> lock(windowFocusedMutex);
+				LOGD("Wait for focus");
+				boost::system_time const timeout=boost::get_system_time()+ boost::posix_time::milliseconds(2000);
+				windowFocusedCondition.timed_wait(lock, timeout);
+				LOGD("Received focus");
+				dropEvents = true;
+			}
+
 			auto event = manager.pollControllers();
 			if (event) {
-				if (windowFocused) {
+				if (!dropEvents) {
 					Application::getApplication().post(event.get());
 				}
 			} else { // No events lets sleep for a while
@@ -169,5 +187,6 @@ int main() {
 	// lambdas are allowed to capture scope by reference.
 	app.runEventDispatcher();
 	pollControllerEvents.store(false);
+	windowFocusedCondition.notify_all();
 	return 0;
 }
