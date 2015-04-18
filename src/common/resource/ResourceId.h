@@ -18,7 +18,7 @@ public:
 	ResourceId(std::string const& packageId, std::string const& fileName)
 			: packageId(packageId), fileName(fileName) {}
 
-	boost::optional<std::string> const& getPackageId() const { return packageId; };
+	boost::optional<std::string> const& getPackageId() const { return packageId; }
 
 	std::string const& getFileName() const { return fileName; }
 

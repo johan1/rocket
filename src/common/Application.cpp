@@ -190,7 +190,21 @@ void Application::mainLoop() {
 			engine.dispatchInputEvents();
 		}
 
+		// Update the engine.
 		engine.update();
+
+		// Call all the pending app tasks
+		for (auto& task : tasks) {
+			--task->delay;
+			if (task->delay == ticks::zero()) {
+				task->task();
+			}
+		}
+		tasks.erase(
+			std::remove_if(tasks.begin(), tasks.end(), [](std::unique_ptr<AppTask> const& task) {
+				return task->delay == ticks::zero();
+			}), tasks.end()
+		);
 
 		eglSurface->swapBuffers();
 
