@@ -2,12 +2,10 @@
 #define _ROCKET_TEXT_H_
 
 #include "Renderable.h"
-// #include "GameObject.h"
 #include "../../resource/ResourceId.h"
 #include "../../glutils/Location.h"
 #include "../../resource/image/Bitmap.h"
 #include "../../FreeTypeLib.h"
-//#include "../../graphics/Canvas.h"
 
 #include <memory>
 #include <string>

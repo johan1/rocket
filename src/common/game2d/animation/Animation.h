@@ -11,7 +11,8 @@ namespace rocket { namespace game2d { namespace animation {
 
 class Animation {
 public:
-	Animation() : cancelled(false), finished(false), tickss(0) {}
+	Animation() = default;
+	virtual ~Animation() = default;
 
 	bool tick() {
 		if (cancelled || finished) {
@@ -36,11 +37,11 @@ private:
 	virtual bool tickImpl() = 0;
 
 	// Whether or not the Animation is cancelled or not
-	bool cancelled;
-	bool finished;
+	bool cancelled = false;
+	bool finished = false;
 
 	// Time elapsed.
-	ticks tickss;
+	ticks tickss = ticks(0);
 };
 
 }}

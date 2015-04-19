@@ -51,7 +51,8 @@ FreeTypeLib::Face::Face(ResourceId const& resourceId) {
 	auto is = resources.openResource(resourceId);
 
 	faceData = std::vector<char>{std::istreambuf_iterator<char>(*is), std::istreambuf_iterator<char>()};
-	FT_New_Memory_Face(FreeTypeLib::get(), reinterpret_cast<unsigned char*>(&(faceData[0])), faceData.size(), 0, &face);
+	FT_New_Memory_Face(FreeTypeLib::get(), reinterpret_cast<unsigned char*>(&(faceData[0])),
+			static_cast<FT_Long>(faceData.size()), 0, &face);
 }
 
 FreeTypeLib::Face::~Face() {

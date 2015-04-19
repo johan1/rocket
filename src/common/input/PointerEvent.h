@@ -24,22 +24,20 @@ public:
 		TOUCH   =  2
 	};
 
-//	typedef rocket::input  std::pair<float, float> SourceCoordinate;
-
-	PointerEvent(int pointerId, PointerType pointerType, ActionType actionType, float x, float y) :
+	PointerEvent(std::size_t pointerId, PointerType pointerType, ActionType actionType, float x, float y) :
 			pointerId(pointerId),
 			actionType(actionType),
 			pointerType(pointerType),
 			coordinate(rocket::util::createPoint(x, y)) {}
 
-	int getPointerId() const { return pointerId; }
+	std::size_t getPointerId() const { return pointerId; }
 	ActionType getActionType() const { return actionType; }
 	PointerType getPointerType() const { return pointerType; }
 
 	rocket::util::Point const& getCoordinate() const { return coordinate; }
 
 private:
-	int pointerId;
+	std::size_t pointerId;
 	ActionType actionType;
 	PointerType pointerType;
 

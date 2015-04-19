@@ -42,7 +42,7 @@ public:
 
 	void surfaceDestroyed(EGLNativeWindowType windowId);
 
-	void surfaceChanged(EGLNativeWindowType windowId, int format, int width, int height);
+	void surfaceChanged(EGLNativeWindowType windowId, int format, unsigned int width, unsigned int height);
 
 	template <typename Event>
 	void post(Event const& event);
@@ -50,7 +50,7 @@ public:
 	// Fetch application resource manager. 
 	rocket::resource::ResourceManager& getResources() { return resources; }
 
-	AudioPlayer& getAudioPlayer() { return audioPlayer; };
+	AudioPlayer& getAudioPlayer() { return audioPlayer; }
 
 	rocket::game2d::Engine2d& getEngine() { return engine; }
 
@@ -68,12 +68,6 @@ public:
 	void schedule(std::function<void()> const& task, boost::chrono::duration<Rep, Period> delay) {
 		schedule(task, boost::chrono::duration_cast<ticks>(delay));
 	}
-/*
-	template <typename Rep, typename Period>
-	void schedule(std::function<ticks()> const& task, boost::chrono::duration<Rep, Period> delay) {
-		schedule(task, boost::chrono::duration_cast<ticks>(delay));
-	}
-*/
 
 private:
 	typedef rocket::util::EventManager<rocket::input::PointerEvent> InputManager;

@@ -21,6 +21,7 @@ public:
 	Particle generate() {
 		return generateImpl();
 	}
+	virtual ~ParticleGenerator() = default;
 
 private:
 	virtual Particle generateImpl() = 0;

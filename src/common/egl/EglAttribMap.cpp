@@ -14,8 +14,8 @@ EglAttribMap::EglAttribMap() {
 }
 
 bool EglAttribMap::contains(EGLint attribName) const {
-	int length = attribs.size();
-	for (int i = 0; i < length; i += 2) {
+	std::size_t length = attribs.size();
+	for (std::size_t i = 0; i < length; i += 2) {
 		if (attribs[i] == attribName) {
 			return true;
 		}
@@ -26,8 +26,8 @@ bool EglAttribMap::contains(EGLint attribName) const {
 
 EGLint& EglAttribMap::operator[](EGLint attribName) {
 	// There ought to be an alternative to this using c++ algorithms and iterators.
-	int length = attribs.size();
-	for (int i = 0; i < length; i += 2) {
+	auto length = attribs.size();
+	for (std::size_t i = 0; i < length; i += 2) {
 		if (attribs[i] == attribName) {
 			return attribs[i+1];
 		}

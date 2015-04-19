@@ -139,7 +139,7 @@ void Application::surfaceDestroyed(EGLNativeWindowType) {
 	future.wait();
 }
 
-void Application::surfaceChanged(EGLNativeWindowType, int, int width, int height) {
+void Application::surfaceChanged(EGLNativeWindowType, int, unsigned int width, unsigned int height) {
 	auto future = renderThread.submit([&]() {
 		LOGD("Application::surfaceChanged");
 
@@ -148,7 +148,7 @@ void Application::surfaceChanged(EGLNativeWindowType, int, int width, int height
 		LOGD("Surface " << eglAttribToString(EGL_HEIGHT) << "=" << eglSurface->query(EGL_HEIGHT));
 		LOGD("Surface " << eglAttribToString(EGL_SWAP_BEHAVIOR) << "=" << eglSurface->query(EGL_SWAP_BEHAVIOR));
 
-		engine.surfaceChanged(width, height);
+		engine.surfaceChanged(static_cast<GLsizei>(width), static_cast<GLsizei>(height));
 
 		if (scheduleMainLoop) {
 			renderThread.submit([this] { // Start looping

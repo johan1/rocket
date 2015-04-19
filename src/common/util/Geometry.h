@@ -190,12 +190,12 @@ AABox createAABB(ForwardIt begin, ForwardIt end) {
 
 // inline, is it needed for constexpr?
 constexpr float deg2rad(float deg) {
-	return deg/360.0 * 2.0 * M_PI;
+	return deg/360.0f * 2.0f * static_cast<float>(M_PI);
 }
 
 // inline
 constexpr float rad2deg(float rad) {
-	return rad/(2.0*M_PI) * 360.0;
+	return rad/(2.0f*static_cast<float>(M_PI)) * 360.0f;
 }
 
 }

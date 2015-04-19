@@ -16,23 +16,11 @@
 
 namespace rocket { namespace game2d {
 
-/*
-struct ParticleDescriptor {
-	ParticleDescriptor(resource::image::ImageId imageId) : imageId(imageId) {}
-	resource::image::ImageId imageId;
-//	glutils::RGBAColor color;
-
-	std::function<glutils::RGBAColor(std::default_random_engine&)> colorFunction;
-	std::function<glm::vec3(std::default_random_engine&)> directionFunction;
-	std::pair<float, float> start_distance;     // distance between origin and start position.
-	std::pair<float, float> end_distance; 		// distance between origin and end position.
-	std::pair<float, float> lifetime;   // life time of the particle
-};
-*/
 class ParticleEmitter : public Renderable {
 public:
-	// ParticleEmitter(ParticleDescriptor const& descriptor, uint32_t numberOfParticles);
-	ParticleEmitter(std::shared_ptr<ParticleGenerator> const& generator, resource::ResourceId const& particleTexture, uint32_t numberOfParticles);
+	ParticleEmitter(std::shared_ptr<ParticleGenerator> const& generator,
+			resource::ResourceId const& particleTexture, uint32_t numberOfParticles);
+	virtual ~ParticleEmitter() = default;
 
 	void start();
 	bool isStarted() { return emitting; }
@@ -57,22 +45,6 @@ private:
 		float duration;
 	};
 
-	/*
-	class ParticleGenerator {
-	public:
-		ParticleGenerator(ParticleDescriptor const& descriptor);
-		ParticleData generateParticleData();
-
-	private:
-		std::default_random_engine random_engine;
-		ParticleDescriptor descriptor;
-
-		std::uniform_real_distribution<float> rStart; 		// random distance start
-		std::uniform_real_distribution<float> rEnd; 		// random distance end
-		std::uniform_real_distribution<float> rLifetime;	// random lifetime
-	};
-	*/
-
 	// Render members
 	std::shared_ptr<glutils::Program> program;
 	glutils::Location vpMatrixLocation;
@@ -88,7 +60,6 @@ private:
 	glutils::Location s2Location;
 
 	// Particle descriptor, contains information of how to generate particle.
-//	ParticleDescriptor descriptor;
 	std::shared_ptr<ParticleGenerator> generator;
 	resource::ResourceId textureResource;
 

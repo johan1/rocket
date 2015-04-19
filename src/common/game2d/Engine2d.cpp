@@ -45,8 +45,8 @@ void Engine2d::destroyed() {
 	sceneFrameBufferObject.reset(); // Let's destroy out scene fbo
 }
 
-void Engine2d::surfaceChanged(uint32_t width, uint32_t height) {
-	glViewport(0, 0, width, height);
+void Engine2d::surfaceChanged(GLsizei width, GLsizei height) {
+	glViewport(0, 0, static_cast<GLsizei>(width), static_cast<GLsizei>(height));
 	checkGlError("glViewport");
 
 	this->width = width;

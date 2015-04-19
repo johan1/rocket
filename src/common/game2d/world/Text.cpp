@@ -86,9 +86,9 @@ void Text::setAlignment(TextAlignment const& alignment) {
 std::shared_ptr<Bitmap<APixel>> Text::createGlyphBitmap(FT_GlyphSlotRec_ const& glyph) {
 	auto glyphBitmap = std::make_shared<Bitmap<APixel>>(glyph.bitmap.width, glyph.bitmap.rows);
 
-	for (int row = 0; row < glyph.bitmap.rows; ++row) {
-		for (int column = 0; column < glyph.bitmap.width; ++column) {
-			auto& pixel = glyphBitmap->getPixel(column, row);
+	for (decltype(glyph.bitmap.rows) row = 0; row < glyph.bitmap.rows; ++row) {
+		for (decltype(glyph.bitmap.width) column = 0; column < glyph.bitmap.width; ++column) {
+			auto& pixel = glyphBitmap->getPixel(static_cast<uint32_t>(column), static_cast<uint32_t>(row));
 			pixel.alpha = glyph.bitmap.buffer[row*glyph.bitmap.width + column];
 		}
 	}
@@ -106,7 +106,7 @@ void Text::updateGlyphMap() {
 	float scaleFactor = height/static_cast<float>(fontSize);
 	width = 0;
 	for (uint32_t i = 0; i < text.size(); ++i) {
-		if (FT_Load_Char(face, text[i], FT_LOAD_RENDER) != 0) { // ignore character on error
+		if (FT_Load_Char(face, static_cast<FT_ULong>(text[i]), FT_LOAD_RENDER) != 0) { // ignore character on error
 			continue;
 		}	
 		width += (face->glyph->advance.x >> 6) * scaleFactor;
@@ -117,10 +117,10 @@ void Text::updateGlyphMap() {
 		}
 		glyphData.push_back( 
 			GlyphData(glyphMap[text[i]], 
-					face->glyph->advance.x >> 6, 
-					face->glyph->advance.y >> 6,
-					face->glyph->bitmap_left,
-					face->glyph->bitmap_top
+					static_cast<uint32_t>(face->glyph->advance.x >> 6),
+					static_cast<uint32_t>(face->glyph->advance.y >> 6),
+					static_cast<uint32_t>(face->glyph->bitmap_left),
+					static_cast<uint32_t>(face->glyph->bitmap_top)
 					));
 	}
 }

@@ -36,7 +36,7 @@ public:
 	void resumed();
 
 	// Sirface callbacks
-	void surfaceChanged(uint32_t width, uint32_t height);
+	void surfaceChanged(GLsizei width, GLsizei height);
 	void update();
 
 /*

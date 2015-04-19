@@ -31,16 +31,13 @@ public:
 			case Type::Uniform:
 				value = program->getUniformLocation(name);
 				break;
-			default: // Not possible
-				std::abort();
-				break;
 			}
 
 			this->program = program;
 		}
 
 		return *value; 
-	};
+	}
 
 private:
 	Type type;

@@ -57,7 +57,7 @@ std::vector<EGLConfig> EglDisplay::getConfigs() {
 		throw EglException("Unable to fetch config count");
 	}
 
-	std::vector<EGLConfig> configs(numConfigs);
+	std::vector<EGLConfig> configs(static_cast<std::size_t>(numConfigs));
 	result = eglGetConfigs(display.get(), &configs[0], numConfigs, &numConfigs);
 	if (result == EGL_FALSE) {
 		throw EglException("Unable to fetch configs");
@@ -74,7 +74,7 @@ std::vector<EGLConfig> EglDisplay::getConfigs(EglAttribMap const& attribs) {
 		throw EglException("Unable to fetch config count");
 	}
 
-	std::vector<EGLConfig> configs(numConfigs);
+	std::vector<EGLConfig> configs(static_cast<std::size_t>(numConfigs));
 	result = eglChooseConfig(display.get(), attribs.getAttribs(), &configs[0], numConfigs, &numConfigs);
 	if (result == EGL_FALSE) {
 		throw EglException("Unable to choose configs");

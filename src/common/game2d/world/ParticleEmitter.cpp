@@ -47,7 +47,6 @@ static const std::string fragmentShader =
 	"void main() {\n"
 	"  vec4 texColor;\n"
 	"  texColor = texture2D(sampler, gl_PointCoord);\n"
-//	"  gl_FragColor = fragment_color;\n"
 	"  gl_FragColor = fragment_color * texColor;\n"
 	"}\n";
 
@@ -141,21 +140,6 @@ void ParticleEmitter::renderImpl(graphics::Canvas &canvas) {
 			&(particles[0].s2));
 	checkGlError("glVertexAttribPointer");
 
-	/*
-	glVertexAttribPointer(directionLocation.get(program), 3, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].direction));
-	checkGlError("glVertexAttribPointer");
-	glVertexAttribPointer(startDistanceLocation.get(program), 1, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].startDistance));
-	checkGlError("glVertexAttribPointer");
-	glVertexAttribPointer(endDistanceLocation.get(program), 1, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].endDistance));
-	checkGlError("glVertexAttribPointer");
-	glVertexAttribPointer(colorLocation.get(program), 4, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].color));
-	checkGlError("glVertexAttribPointer");
-	*/
-
 	glEnableVertexAttribArray(timestampLocation.get(program));
 	checkGlError("glEnableVertiexAttribArray");
 	glEnableVertexAttribArray(durationLocation.get(program));
@@ -173,99 +157,13 @@ void ParticleEmitter::renderImpl(graphics::Canvas &canvas) {
 	glEnableVertexAttribArray(s2Location.get(program));
 	checkGlError("glEnableVertiexAttribArray");
 
-	/*
-	glEnableVertexAttribArray(directionLocation.get(program));
-	checkGlError("glEnableVertiexAttribArray");
-	glEnableVertexAttribArray(startDistanceLocation.get(program));
-	checkGlError("glEnableVertiexAttribArray");
-	glEnableVertexAttribArray(endDistanceLocation.get(program));
-	checkGlError("glEnableVertiexAttribArray");
-	*/
-
-	glDrawArrays(GL_POINTS, 0, particles.size());
+	glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(particles.size()));
 
 	// Draw particles...
 	time += 1.0/static_cast<float>(TARGET_FPS);
 
 	glDisable(GL_BLEND);
 	canvas.clear();
-
-/*
-	auto& modelMatrix = canvas.getModelMatrix();
-	auto& vpMatrix = canvas.getViewProjectionMatrix();
-// 	auto& vpMatrix = canvas.get();
-	auto& texture = canvas.getTextureManager().getTexture(descriptor.imageId.getResourceId());
-
-	// TODO: Do some boundary tests... How?
-
-	program->use();
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	// Pushing uniforms...
-	glUniformMatrix4fv(mvpMatrixLocation.get(program), 1, GL_FALSE, glm::value_ptr(mvpMatrix) );
-	checkGlError("glUniformMatrix4fv");
-
-	glUniform1f(timeLocation.get(program), time);
-	checkGlError("glUniform1f");
-
-	texture.setActive(samplerLocation.get(program), GL_TEXTURE0);
-
-	for (auto &particle : particles) {
-		auto liveParticles = particles.size();
-		if (time > particle.timeStamp + particle.lifetime) {
-			if (emitting) {
-				particle = generator.generateParticleData();
-				particle.timeStamp = time;
-			} else {
-				--liveParticles;
-			}
-		}
-		if (liveParticles == 0) {
-			hasLiveParticles = false;
-		}
-	}
-
-	// Pushing attributes.
-	glVertexAttribPointer(timeStampLocation.get(program), 1, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].timeStamp));
-	checkGlError("glVertexAttribPointer");
-	glVertexAttribPointer(lifetimeLocation.get(program), 1, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].lifetime));
-	checkGlError("glVertexAttribPointer");
-	glVertexAttribPointer(directionLocation.get(program), 3, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].direction));
-	checkGlError("glVertexAttribPointer");
-	glVertexAttribPointer(startDistanceLocation.get(program), 1, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].startDistance));
-	checkGlError("glVertexAttribPointer");
-	glVertexAttribPointer(endDistanceLocation.get(program), 1, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].endDistance));
-	checkGlError("glVertexAttribPointer");
-	glVertexAttribPointer(colorLocation.get(program), 4, GL_FLOAT, 
-			GL_FALSE, sizeof(ParticleData), &(particles[0].color));
-	checkGlError("glVertexAttribPointer");
-
-	glEnableVertexAttribArray(timeStampLocation.get(program));
-	checkGlError("glEnableVertiexAttribArray");
-	glEnableVertexAttribArray(lifetimeLocation.get(program));
-	checkGlError("glEnableVertiexAttribArray");
-	glEnableVertexAttribArray(directionLocation.get(program));
-	checkGlError("glEnableVertiexAttribArray");
-	glEnableVertexAttribArray(startDistanceLocation.get(program));
-	checkGlError("glEnableVertiexAttribArray");
-	glEnableVertexAttribArray(endDistanceLocation.get(program));
-	checkGlError("glEnableVertiexAttribArray");
-
-	glDrawArrays(GL_POINTS, 0, particles.size());
-
-	// Draw particles...
-	time += 1.0/TARGET_FPS;
-
-	glDisable(GL_BLEND);
-	canvas.clear();
-*/
 }
 
 void ParticleEmitter::start() {
@@ -282,24 +180,4 @@ void ParticleEmitter::stop() {
 	emitting = false;
 }
 
-/*
-ParticleEmitter::ParticleGenerator::ParticleGenerator(ParticleDescriptor const& descriptor) :
-		random_engine(std::time(nullptr)),
-		descriptor(descriptor),
-		rStart(descriptor.start_distance.first, descriptor.start_distance.second),
-		rEnd(descriptor.end_distance.first, descriptor.end_distance.second),
-		rLifetime(descriptor.lifetime.first, descriptor.lifetime.second) {}
-
-ParticleEmitter::ParticleData ParticleEmitter::ParticleGenerator::generateParticleData() {
-	ParticleData particleData;
-
-	particleData.direction = descriptor.directionFunction(random_engine);
-	particleData.startDistance = rStart(random_engine);
-	particleData.endDistance = rEnd(random_engine);
-	particleData.lifetime = rLifetime(random_engine);
-	particleData.color = descriptor.colorFunction(random_engine);
-	
-	return particleData;
-}
-*/
 }}

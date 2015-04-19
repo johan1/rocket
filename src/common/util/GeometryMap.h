@@ -52,8 +52,6 @@ public:
 	GeometryMap() : boxDimension(Dimension(1, 1, 1)) {}
 	GeometryMap(Dimension const& boxDimension) : boxDimension(boxDimension) {}
 
-//	std::vector<Element> const& getLocal(Point const& p);
-
 	void add(Element const& element, Point const& point) {
 		elements[getBox(point)].push_back(element);
 		elementLocations[element] = point;
@@ -128,9 +126,9 @@ private:
 
 	gmdetails::BoxId getBox(Point const& p) {
 		gmdetails::BoxId box;
-		box.x = std::floor(p.x/boxDimension.x);
-		box.y = std::floor(p.y/boxDimension.y);
-		box.z = std::floor(p.z/boxDimension.z);
+		box.x = static_cast<int>(std::floor(p.x/boxDimension.x));
+		box.y = static_cast<int>(std::floor(p.y/boxDimension.y));
+		box.z = static_cast<int>(std::floor(p.z/boxDimension.z));
 		return box;	
 	}
 };

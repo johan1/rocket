@@ -20,7 +20,7 @@ namespace rocket { namespace util {
 template <typename Event>
 class Handler {
 public:
-	virtual ~Handler() {};
+	virtual ~Handler() = default;
 	bool handle(Event const& event) { return handleImpl(event); }
 
 private:
@@ -103,13 +103,7 @@ public:
 private:
 	class IInnerDispatcher {
 	public:
-	//	IInnerDispatcher() {}
-		virtual ~IInnerDispatcher() {};
-	/*
-	private:
-		IInnerDispatcher(IInnerDispatcher const&) = delete;
-		IInnerDispatcher& operator=(IInnerDispatcher const&) = delete;
-	*/
+		virtual ~IInnerDispatcher() = default;
 	};
 
 	template <typename Event>

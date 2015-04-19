@@ -4,10 +4,13 @@
 #include <memory>
 #include <vector>
 
+#include "Animation.h"
+
 namespace rocket { namespace game2d { namespace animation {
 
 class AnimationBuilder {
 public:
+	virtual ~AnimationBuilder() = default;
 	std::unique_ptr<Animation> build() const { return buildImpl(); }
 	bool isValid() const { return isValidImpl(); }
 

@@ -62,13 +62,12 @@ Menu::Menu(rocket::resource::ResourceId const& font,
 			[&](ControllerEvent const& ce) -> bool {
 		if (ce.getButtonId() == button_id::DOWN) {
 			if (ce.getValue() == 0) { // Button release
-				auto newSelectedIndex = std::min(static_cast<int32_t>(selectedIndex)+1,
-						static_cast<int32_t>(menuItems.size())-1);
-				setSelectedIndex(newSelectedIndex);
+				auto newSelectedIndex = (selectedIndex + 1) % menuItems.size();
+				setSelectedIndex(static_cast<std::size_t>(newSelectedIndex));
 			} 
 		} else if (ce.getButtonId() == button_id::UP) {
 			if (ce.getValue() > 0) {
-				auto newSelectedIndex = std::max(static_cast<int32_t>(selectedIndex)-1, 0);
+				auto newSelectedIndex = (selectedIndex + menuItems.size() - 1) % menuItems.size();
 				setSelectedIndex(newSelectedIndex);
 			}
 		} else if (ce.getButtonId() == button_id::ACTION) {
@@ -110,13 +109,13 @@ void Menu::updateItems() {
 	}
 }
 
-void Menu::setSelectedIndex(uint32_t index) {
+void Menu::setSelectedIndex(std::size_t index) {
 	menuItems[selectedIndex].text->setFontColor(normalFontColor);
 	selectedIndex = index;
 	menuItems[selectedIndex].text->setFontColor(selectedFontColor);
 }
 
-uint32_t Menu::getSelectedIndex() const {
+std::size_t Menu::getSelectedIndex() const {
 	return selectedIndex;
 }
 

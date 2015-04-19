@@ -101,32 +101,29 @@ rocket::resource::audio::AudioPlayer& Director::getAudioPlayer() {
 }
 
 uint32_t Director::registerController(std::string const& controllerName) {
-	controllers.push_back(Controller(controllerName));
-	return controllers.size()-1;
+	static uint32_t controllerCount = 0;
+	controllers.insert(std::make_pair(++controllerCount, Controller{controllerName}));
+	return controllerCount;
 }
 
 void Director::unregisterController(uint32_t controllerId) {
-	if (controllerId < controllers.size()) {
-		controllers.erase(controllers.begin() + controllerId);
-	} else {
-		throw std::runtime_error("Invalid controllerId when unregistering controller");
-	}
+	controllers.erase(controllerId);
 }
 
 void Director::dispatchControllerEvent(uint32_t controllerId, uint32_t buttonId, uint8_t value) {
-	if (controllerId >= controllers.size()) {
+	if (controllers.find(controllerId) == controllers.end()) {
 		throw std::runtime_error("Invalid controllerId when dispatching controller event");
 	}
-	controllers[controllerId].setButtonValue(buttonId, value);
+	controllers.find(controllerId)->second.setButtonValue(buttonId, value);
 
 	Application::getApplication().post(ControllerEvent(controllerId, buttonId, value));
 }
 
 rocket::input::Controller const& Director::getControllerName(uint32_t controllerId) {
-	if (controllerId >= controllers.size()) {
+	if (controllers.find(controllerId) == controllers.end()) {
 		throw std::runtime_error("Invalid controllerId when fetching controller");
 	}
-	return controllers[controllerId];
+	return controllers.find(controllerId)->second;
 }
 
 rocket::glutils::ProgramPool &Director::getProgramPool() {

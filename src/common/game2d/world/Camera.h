@@ -17,7 +17,7 @@ class Camera : public SceneObject /* : public Node */ {
 public:
 	Camera();
 	Camera(std::function<glm::mat4(glm::vec4 const&)> const& projectionFunction);
-	virtual ~Camera() noexcept(true) {};
+	virtual ~Camera() noexcept(true) = default;
 	Camera(Camera&& camera) = default;
 	Camera& operator=(Camera&& camera) = default;
 

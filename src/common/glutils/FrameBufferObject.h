@@ -6,23 +6,6 @@
 namespace rocket { namespace glutils {
 
 class Texture2d;
-/*
-class FrameBufferObject {
-public:
-	FrameBufferObject(GLsizei width, GLsizei height);
-	~FrameBufferObject();
-
-	FrameBufferObject(FrameBufferObject const&) = delete;
-	FrameBufferObject& operator=(FrameBufferObject const&) = delete;
-
-	void bind(Texture2d const& texture2d);
-
-private:
-	GLsizei width;
-	GLsizei height;
-	GLuint id;
-};
-*/
 
 // Let's lie a bit and call this class FrameBufferObject.
 class FrameBufferObject {

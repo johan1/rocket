@@ -80,7 +80,7 @@ private:
 
 	std::function<void(void)> initFunction;
 	boost::optional<glm::vec4> viewPort;
-	std::vector<rocket::input::Controller> controllers;
+	std::unordered_map<uint32_t, rocket::input::Controller> controllers;
 };
 
 template <typename Function>

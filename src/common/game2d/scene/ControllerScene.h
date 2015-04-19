@@ -82,7 +82,7 @@ public:
 private:
 	uint32_t defaultControllerId;
 	std::vector<std::unique_ptr<ButtonObject>> buttons;
-	std::unordered_map<uint32_t, ButtonObject*> pointers;
+	std::unordered_map<std::size_t, ButtonObject*> pointers;
 
 	void init();
 };
