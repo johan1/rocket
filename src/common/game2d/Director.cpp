@@ -15,7 +15,7 @@ Director& Director::getDirector() {
 	return director;
 }
 
-Director::Director() : animationIdCounter(0) {
+Director::Director() {
 	LOGD("Director created!");
 }
 
@@ -24,49 +24,28 @@ Director::~Director() {
 }
 
 void Director::addScene(std::shared_ptr<Scene> const& scene) {
-	scenes.push_back(scene);
-	if (viewPort) {
-		scene->updateProjection();
-	}
+	Application::getApplication().getEngine().addScene(scene);
 }
 
 void Director::addSceneGroup(std::shared_ptr<SceneGroup> const& sceneGroup) {
-	for (auto const& scene : sceneGroup->getScenes()) {
-		addScene(scene);
-	}
-	sceneGroup->loaded();
-	sceneGroups.push_back(sceneGroup);
+	Application::getApplication().getEngine().addSceneGroup(sceneGroup);
 }
 
 void Director::removeScene(std::shared_ptr<Scene> const& scene) {
-	scenes.erase(std::remove(scenes.begin(), scenes.end(), scene), scenes.end());
+	Application::getApplication().getEngine().removeScene(scene);
 }
 
 // Remove all scene and scene groups
 void Director::removeAllScenes() {
-	scenes.clear();
-	for (auto& sceneGroup : sceneGroups) {
-		sceneGroup->unloaded();
-	}
-	sceneGroups.clear();
+	Application::getApplication().getEngine().removeAllScenes();
 }
 
 void Director::removeSceneGroup(std::shared_ptr<SceneGroup> const& sceneGroup) {
-	erase_if(scenes, contains_element(sceneGroup->getScenes()));
-	sceneGroup->unloaded();
-	erase(sceneGroups, sceneGroup);
+	Application::getApplication().getEngine().removeSceneGroup(sceneGroup);
 }
 
 void Director::removeSceneGroup(SceneGroup const* sceneGroup) {
-	removeSceneGroup(*find_if(sceneGroups, managed_by_sp(sceneGroup)));
-}
-
-std::vector<std::shared_ptr<Scene>>& Director::getScenes() {
-	return scenes;
-}
-
-std::vector<std::shared_ptr<SceneGroup>>& Director::getSceneGroups() {
-	return sceneGroups;
+	Application::getApplication().getEngine().removeSceneGroup(sceneGroup);
 }
 
 void Director::setViewPort(boost::optional<glm::vec4> const& viewPort) {
@@ -74,22 +53,11 @@ void Director::setViewPort(boost::optional<glm::vec4> const& viewPort) {
 }
 
 int Director::addAnimation(std::shared_ptr<AnimationBuilder> const& animationBuilder) {
-	animations[++animationIdCounter] = animationBuilder->build();
-	return animationIdCounter;
+	return Application::getApplication().getEngine().addAnimation(animationBuilder);
 }
 
 void Director::cancelAnimation(int animationId) {
-	if (animations.find(animationId) != animations.end()) {
-		animations[animationId]->cancel();
-	}
-}
-
-void Director::removeAnimation(int animationId) {
-	animations.erase(animationId);
-}
-
-std::unordered_map<int, std::unique_ptr<Animation>>& Director::getAnimations() {
-	return animations;
+	Application::getApplication().getEngine().cancelAnimation(animationId);
 }
 
 rocket::resource::ResourceManager& Director::getResources() {

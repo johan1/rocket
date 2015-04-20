@@ -25,8 +25,9 @@ class Director {
 public:
 	static Director& getDirector();
 	
-	template <typename Function>
-	void setInitFunction(Function &&f);
+	void setInitFunction(std::function<void(void)> const& f) {
+		initFunction = f;
+	}
 
 	//! Called by game engine when initializing upon surface creation.
 	void init();
@@ -39,22 +40,15 @@ public:
 	void addSceneGroup(std::shared_ptr<SceneGroup> const& sceneGroup);
 
 	void removeScene(std::shared_ptr<Scene> const& scene);
-	void removeAllScenes(); // TODO: This indicates that scenes should be managed by engine and not by director.
+	void removeAllScenes();
 	void removeSceneGroup(std::shared_ptr<SceneGroup> const& sceneGroup);
 	void removeSceneGroup(SceneGroup const* sceneGroup);
-
-	// TODO: This is terrible leaky. The scenes should belong to the engine!
-	std::vector<std::shared_ptr<Scene>>& getScenes();
-	std::vector<std::shared_ptr<SceneGroup>>& getSceneGroups();
 
 	//! Animation management
 	// TODO: How to cancel running animations?
 	// TODO: How to fetch
 	int addAnimation(std::shared_ptr<animation::AnimationBuilder> const& animation);
 	void cancelAnimation(int animationId);
-
-	void removeAnimation(int animationId); // Called by superiour.
-	std::unordered_map<int, std::unique_ptr<animation::Animation>>& getAnimations(); // Called by superior
 
 	rocket::resource::ResourceManager& getResources();
 	rocket::resource::audio::AudioPlayer& getAudioPlayer();
@@ -73,22 +67,10 @@ private:
 	
 	~Director();
 
-	std::vector<std::shared_ptr<Scene>> scenes;
-	std::vector<std::shared_ptr<SceneGroup>> sceneGroups;
-
-	int animationIdCounter;
-	std::unordered_map<int, std::unique_ptr<animation::Animation>> animations;
-
 	std::function<void(void)> initFunction;
 	boost::optional<glm::vec4> viewPort;
 	std::unordered_map<uint32_t, rocket::input::Controller> controllers;
 };
-
-template <typename Function>
-inline
-void Director::setInitFunction(Function &&f) {
-	initFunction = f;
-}
 
 inline
 void Director::init() {

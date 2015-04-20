@@ -20,6 +20,13 @@
 
 namespace rocket {
 
+/*!
+ * The application class.
+ *
+ * The application class is responsible for setting up a render context that engine can use.
+ * It is also responsible for propagating state changes and inputs to the engine.
+ * And finally it's responsible for scheduling tasks.
+ */
 class Application {
 public:
 	static void init(ResourceManager && rm, std::unique_ptr<PlatformAudioPlayer> && audioPlayer);
@@ -56,32 +63,8 @@ public:
 
 	Config const& getConfig() const { return config; }
 
-	void schedule(std::function<void()> const& task) {
-		tasks.push_back(std::unique_ptr<AppTask>(new AppTask(task)));
-	}
-
-	void schedule(std::function<void()> const& task, ticks delay) {
-		tasks.push_back(std::unique_ptr<AppTask>(new AppTask(task, delay)));
-	}
-
-	template <typename Rep, typename Period>
-	void schedule(std::function<void()> const& task, boost::chrono::duration<Rep, Period> delay) {
-		schedule(task, boost::chrono::duration_cast<ticks>(delay));
-	}
-
 private:
 	typedef rocket::util::EventManager<rocket::input::PointerEvent> InputManager;
-
-	struct AppTask {
-		std::function<void(void)> task;
-		ticks delay;
-
-		AppTask(std::function<void()> const& task) : task(task), delay(1) {}
-
-		AppTask(std::function<void()> const& task, ticks delay) : task(task), delay(delay) {
-			ROCKET_ASSERT_TRUE(delay > ticks::zero());
-		}
-	};
 
 	Application(ResourceManager &&rm, std::unique_ptr<PlatformAudioPlayer> &&audioPlayer);
 
@@ -116,9 +99,6 @@ private:
 	// Timing stuff
 	int frameDiagnosticCount;
 	boost::chrono::system_clock::time_point frameDiagnosticTimePoint;
-
-	// Task management
-	std::vector<std::unique_ptr<AppTask>> tasks;
 };
 
 template <typename Event>

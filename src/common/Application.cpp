@@ -66,7 +66,6 @@ void Application::create(EGLNativeDisplayType displayId) {
 		LOGD("EGL vendor: " << eglDisplay->queryString(EGL_VENDOR));
 		LOGD("EGL version: " << eglDisplay->queryString(EGL_VERSION));
 
-
 		// Picking EGL Config
 		eglConfig = eglDisplay->pickConfig(config.getEglConfigAttr());
 		EglAttribMap attribs = eglDisplay->getConfigAttribs(eglConfig);
@@ -172,7 +171,7 @@ void Application::mainLoop() {
 
 	// Do surface update
 	if(!isPaused && eglSurface != nullptr) {
-		// Setting
+		// Setting up
 		if (!makeCurrentCalled) {
 			makeCurrent(*eglDisplay.get(), *eglContext.get(), *eglSurface.get(), *eglSurface.get());
 			makeCurrentCalled = true;
@@ -192,22 +191,7 @@ void Application::mainLoop() {
 
 		// Update the engine.
 		engine.update();
-
-		// Call all the pending app tasks
-		for (auto& task : tasks) {
-			--task->delay;
-			if (task->delay == ticks::zero()) {
-				task->task();
-			}
-		}
-		tasks.erase(
-			std::remove_if(tasks.begin(), tasks.end(), [](std::unique_ptr<AppTask> const& task) {
-				return task->delay == ticks::zero();
-			}), tasks.end()
-		);
-
 		eglSurface->swapBuffers();
-
 	} else {
 		makeCurrentCalled = false;
 	}
