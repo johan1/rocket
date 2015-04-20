@@ -52,7 +52,8 @@ bool ResourceManager::exists(ResourceId const& resourceId) const {
 
 std::shared_ptr<std::istream> ResourceManager::openResource(ResourceId const& resourceId) {
 	if (!exists(resourceId)) {
-		throw ResourceException(ResourceException::Type::RESOURCES_NOT_FOUND, "Couldn't find resource");
+		throw ResourceException(ResourceException::Type::RESOURCES_NOT_FOUND,
+				"Couldn't find resource: " + resourceId.getFileName());
 	}
 
 	std::shared_ptr<ResourcePackage> resourcePackage;

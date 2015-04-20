@@ -76,10 +76,7 @@ public:
 	TextAlignment const& getAlignment() const;
 	void setAlignment(TextAlignment const& alignment);
 
-//	std::shared_ptr<rocket::resource::image::Bitmap<rocket::resource::image::APixel>> getGlyphData(char c);
 	std::vector<GlyphData> const& getGlyphData() const;
-
-
 
 private:
 	std::string text;
@@ -94,7 +91,6 @@ private:
 			std::shared_ptr<rocket::resource::image::Bitmap<rocket::resource::image::APixel>>> glyphMap;
 
 	std::vector<GlyphData> glyphData;
-//	std::unordered_map<char, std::unique_ptr<GlyphData>> glyphMap;
 
 	// We need to create/recreate glyphMap upon construction and if size changes.
 	static std::shared_ptr<rocket::resource::image::Bitmap<rocket::resource::image::APixel>> createGlyphBitmap(FT_GlyphSlotRec_ const& glyph);

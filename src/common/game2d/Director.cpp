@@ -25,7 +25,7 @@ Director::~Director() {
 
 void Director::addScene(std::shared_ptr<Scene> const& scene) {
 	scenes.push_back(scene);
-	if(viewPort) {
+	if (viewPort) {
 		scene->updateProjection();
 	}
 }

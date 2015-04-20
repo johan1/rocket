@@ -43,6 +43,7 @@ public:
 	void removeSceneGroup(std::shared_ptr<SceneGroup> const& sceneGroup);
 	void removeSceneGroup(SceneGroup const* sceneGroup);
 
+	// TODO: This is terrible leaky. The scenes should belong to the engine!
 	std::vector<std::shared_ptr<Scene>>& getScenes();
 	std::vector<std::shared_ptr<SceneGroup>>& getSceneGroups();
 
