@@ -32,7 +32,7 @@ void Engine2d::created() {
 void Engine2d::destroyed() {
 	LOGD("Engine2d::onDestroyed");
 
-	scenes.clear();
+	removeAllScenes();
 	Director::getDirector().setViewPort(boost::optional<glm::vec4>());
 	programPool.reset(); // This should cause all gl programs to be destroyed
 	sceneFrameBufferObject.reset(); // Let's destroy out scene fbo
