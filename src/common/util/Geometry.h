@@ -188,6 +188,14 @@ AABox createAABB(ForwardIt begin, ForwardIt end) {
 	return AABox(p1, p2);
 }
 
+// Creates an AABox containing the points p1 and p2
+inline
+AABox createAABB(Point const& p1, Point const& p2) {
+	Point boxP1 = createPoint(std::min(p1.x, p2.x), std::min(p1.y, p2.y), std::min(p1.z, p2.z));
+	Point boxP2 = createPoint(std::max(p1.x, p2.x), std::max(p1.y, p2.y), std::max(p1.z, p2.z));
+	return AABox(boxP1, boxP2);
+}
+
 // inline, is it needed for constexpr?
 constexpr float deg2rad(float deg) {
 	return deg/360.0f * 2.0f * static_cast<float>(M_PI);

@@ -27,16 +27,21 @@ void ControllerScene::init() {
 	registerHandler(HandlerBuilder<PointerEvent>::build(
 		[=](PointerEvent const& pe) -> bool {
 			if(pe.getActionType() == PointerEvent::ActionType::PRESSED) {
+				auto& coord = pe.getCoordinate(); //getWorldCoordinate(pe);
+				LOGD("Press position " << coord.x << ", " << coord.y);
 				for (auto& button : buttons) {
+					// Let's calculate bounding points in world coordinates
 					auto pos = button->getGlobalPosition();
-
-					// TODO: Ok this is broken, but let us ignore transformations for now.
-					// Also, we need to handle depth in some manner...
 					auto p1 = createPoint(pos.x - button->getDimension().x/2.0f,
 							pos.y - button->getDimension().y/2.0f);
 					auto p2 = createPoint(pos.x + button->getDimension().x/2.0f,
 							pos.y + button->getDimension().y/2.0f);
-					AABox aabb(p1, p2);
+
+					// Create bounding box in ndc coordinates
+					AABox aabb = createAABB(project(p1), project(p2));
+
+					LOGD("Button position pos " << pos.x << ", " << pos.y << " aabb (" << aabb.p1.x << ", " << aabb.p1.y
+							<< ", " << aabb.p2.x << ", " << aabb.p2.y << ")");
 
 					if (aabb.contains(pe.getCoordinate())) { // Button pressed
 						if (button->pressCount == 0) {
@@ -50,7 +55,6 @@ void ControllerScene::init() {
 				}
 			} else if (pe.getActionType() != PointerEvent::ActionType::MOVED) { // RELEASED OR CANCEL
 				if (pointers.find(pe.getPointerId()) != pointers.end()) {
-
 					auto button = pointers[pe.getPointerId()];
 					pointers.erase(pe.getPointerId());
 

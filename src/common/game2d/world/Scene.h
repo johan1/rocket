@@ -52,7 +52,29 @@ public:
 
 	glm::vec3 project(glm::vec3 const& worldCoordinate) const;
 
+	glm::vec4 project(glm::vec4 const& worldCoordinate) const {
+		auto coordinate = glm::vec3(worldCoordinate.x, worldCoordinate.y, worldCoordinate.z);
+		auto ndcCoordinate = project(coordinate);
+		return glm::vec4(ndcCoordinate.x, ndcCoordinate.y, ndcCoordinate.z, 1.0);
+	}
+
 	glm::vec3 unproject(glm::vec3 const& ndcCoordinate) const;
+
+	glm::vec4 unproject(glm::vec4 const& ndcCoordinate) const {
+		auto coordinate = glm::vec3(ndcCoordinate.x, ndcCoordinate.y, ndcCoordinate.z);
+		auto worldCoordinate = unproject(coordinate);
+		return glm::vec4(worldCoordinate.x, worldCoordinate.y, worldCoordinate.z, 1.0);
+	}
+
+	glm::vec3 getWorldCoordinate(PointerEvent const& pe) const {
+		auto &coord = pe.getCoordinate();
+		return unproject(glm::vec3(coord.x, coord.y, 0));
+	}
+
+	glm::vec3 getNdcCoordinate(SceneObject const& sceneObject) const {
+		auto pos = sceneObject.getGlobalPosition();
+		return project(pos);
+	}
 
 	void render();
  
