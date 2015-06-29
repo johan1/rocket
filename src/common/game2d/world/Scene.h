@@ -35,7 +35,7 @@ public:
 
 	void update();
 
-	void updateProjection();
+	void updateProjection(glm::vec4 const& viewPort);
 
 	uint32_t addOnProjectionChangedObserver(std::function<void()> observer) {
 		static uint32_t id = 0;
@@ -125,8 +125,13 @@ public:
 	RenderObject* add(std::shared_ptr<Renderable> const& renderable, bool group, RenderObject* parent);
 	void remove(RenderObject *ro);
 
-	util::AABox const& getViewport() const {
+	// Returns an axis aligned box constraining the camera view in world units.
+	util::AABox const& getCameraAABB() {
 		return camera.getAABB();
+	}
+
+	glm::vec4 const& getViewPort() {
+		return viewPort;
 	}
 
 private:
@@ -150,6 +155,8 @@ private:
 
 	// Camera management
 	Camera camera;
+
+	glm::vec4 viewPort;
 
 	std::vector<std::tuple<uint32_t, std::function<void()>>> projectionChangedObservers;
 

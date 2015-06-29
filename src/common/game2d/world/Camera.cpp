@@ -100,13 +100,8 @@ glm::vec3 Camera::unproject(glm::vec3 const& ndcCoordinate) const {
 	return glm::vec3(result[0], result[1], result[2]);
 }
 
-void Camera::updateProjection() {
-	auto viewPort = Director::getDirector().getViewPort();
-
-	// If view port is not valid then someone is trying to use a camera outside of the application. Currently this does not work... Bad design?
-	ROCKET_ASSERT_TRUE(viewPort != nullptr);
-
-	projection = projectionFunction(*viewPort);
+void Camera::updateProjection(glm::vec4 const& viewPort) {
+	projection = projectionFunction(viewPort);
 	transformationValid = false;
 	transformationInverseValid = false;
 	aabbValid = false;

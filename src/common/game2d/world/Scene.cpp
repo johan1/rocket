@@ -67,8 +67,9 @@ void Scene::remove(RenderObject *ro) {
 	});
 }
 
-void Scene::updateProjection() {
-	camera.updateProjection();
+void Scene::updateProjection(glm::vec4 const& viewPort) {
+	this->viewPort = viewPort;
+	camera.updateProjection(viewPort);
 
 	for (auto const& observer : projectionChangedObservers) {
 		std::get<1>(observer)();

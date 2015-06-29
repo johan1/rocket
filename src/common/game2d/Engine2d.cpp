@@ -50,7 +50,7 @@ void Engine2d::surfaceChanged(GLsizei width, GLsizei height) {
 	Director::getDirector().setViewPort(glm::vec4(0, 0, width, height));
 
 	for (auto &scene : scenes) {
-		scene->updateProjection();
+		scene->updateProjection(glm::vec4(0, 0, width, height));
 	}
 }
 
@@ -118,7 +118,7 @@ void Engine2d::resumed() {}
 
 void Engine2d::addScene(std::shared_ptr<Scene> const& scene) {
 	scenes.push_back(scene);
-	scene->updateProjection();
+	scene->updateProjection(glm::vec4(viewPort.x(), viewPort.y(), viewPort.width(), viewPort.height()));
 }
 
 void Engine2d::addSceneGroup(std::shared_ptr<SceneGroup> const& sceneGroup) {

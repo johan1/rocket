@@ -23,6 +23,9 @@ public:
 
 	void init();
 
+	glm::mat4 const& getProjection() const {
+		return projection;
+	}
 	glm::mat4 const& getTransformation() const;
 	glm::mat4 const& getTransformationInverse() const;
 	bool isTransformationValid() const;
@@ -31,7 +34,7 @@ public:
 	// Schedules update of projection.
 
 	// Notify camera that projection has been changed and needs to be updated.
-	void updateProjection();
+	void updateProjection(glm::vec4 const& viewPort);
 
 	glm::vec3 project(glm::vec3 const& worldCoordinate) const;
 	glm::vec3 unproject(glm::vec3 const& ndcCoordinate) const;
@@ -50,7 +53,6 @@ public:
 private:
 	std::function<glm::mat4(glm::vec4 const&)> projectionFunction;
 
-//	glm::mat4 view;			// The view matrix, e.g. camera tranformations
 	glm::mat4 projection;	// The projection matrix, e.g. camera to gl projection
 
 	mutable bool transformationValid;
@@ -59,10 +61,6 @@ private:
 	mutable glm::mat4 transformationInverse;
 	mutable util::AABox aabb;
 	mutable bool aabbValid;
-
-//	void onInvalidated(SceneObject const&);
-
-//	virtual glm::mat4 calcMatrix(glm::mat4 const& rotation, glm::vec3 const& translation, glm::vec3 const& scale) const;
 };
 
 }
