@@ -19,12 +19,16 @@ namespace rocket { namespace game2d {
 class ParticleEmitter : public Renderable {
 public:
 	ParticleEmitter(std::shared_ptr<ParticleGenerator> const& generator,
-			resource::ResourceId const& particleTexture, uint32_t numberOfParticles);
+			resource::ResourceId const& particleTexture, float unitSize, uint32_t numberOfParticles);
 	virtual ~ParticleEmitter() = default;
 
 	void start();
 	bool isStarted() { return emitting; }
 	void stop();
+
+	void setUnitSize(float unitSize) {
+		this->unitSize = unitSize;
+	}
 
 private:
 	struct ParticleData {
@@ -39,33 +43,35 @@ private:
 		glm::vec4 p2;
 		glutils::RGBAColor c1;
 		glutils::RGBAColor c2;
-		float s1;
-		float s2;
+		float s1; // Size in unitSize
+		float s2; // Size in unitSize
 		float timestamp;
 		float duration;
 	};
 
 	// Render members
 	std::shared_ptr<glutils::Program> program;
-	glutils::Location vpMatrixLocation;
-	glutils::Location timeLocation;
-	glutils::Location samplerLocation;
-	glutils::Location c1Location;
-	glutils::Location c2Location;
-	glutils::Location timestampLocation;
-	glutils::Location durationLocation;
-	glutils::Location p1Location;
-	glutils::Location p2Location;
-	glutils::Location s1Location;
-	glutils::Location s2Location;
+	glutils::Location vpMatrixLocation = glutils::Location(Location::Type::Uniform, "vpMatrix");
+	glutils::Location timeLocation = glutils::Location(Location::Type::Uniform, "time");
+	glutils::Location samplerLocation = glutils::Location(Location::Type::Uniform, "sampler");
+	glutils::Location c1Location = glutils::Location(Location::Type::Attribute, "c1");
+	glutils::Location c2Location = glutils::Location(Location::Type::Attribute, "c2");
+	glutils::Location timestampLocation = glutils::Location(Location::Type::Attribute, "timestamp");
+	glutils::Location durationLocation = glutils::Location(Location::Type::Attribute, "duration");
+	glutils::Location p1Location = glutils::Location(Location::Type::Attribute, "p1");
+	glutils::Location p2Location = glutils::Location(Location::Type::Attribute, "p2");
+	glutils::Location unitSizeLocation = glutils::Location(Location::Type::Uniform, "unitSize");
+	glutils::Location s1Location = glutils::Location(Location::Type::Attribute, "s1");
+	glutils::Location s2Location = glutils::Location(Location::Type::Attribute, "s2");
 
 	// Particle descriptor, contains information of how to generate particle.
 	std::shared_ptr<ParticleGenerator> generator;
 	resource::ResourceId textureResource;
 
-	float time;
-	bool emitting;
-	bool hasLiveParticles;
+	float time = 0.0f;
+	bool emitting = false;
+	bool hasLiveParticles = false;
+	float unitSize;
 	std::vector<ParticleData> particles;
 
 	virtual void renderImpl(graphics::Canvas &canvas);

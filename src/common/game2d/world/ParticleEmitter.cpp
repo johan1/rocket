@@ -16,12 +16,13 @@ static const std::string vertexShader =
 	"precision highp float;\n"
 	"uniform mat4 vpMatrix;\n" // View projection matrix. I.e. P*V
 	"uniform float time;\n"
+	"uniform float unitSize;\n"
 	"attribute float timestamp;\n"
 	"attribute float duration;\n"
 	"attribute vec3 p1;\n" // Start point
 	"attribute vec3 p2;\n" // End point
-	"attribute float s1;\n" // Start size
-	"attribute float s2;\n" // End size
+	"attribute float s1;\n" // Start size (in units)
+	"attribute float s2;\n" // End size (in units)
 	"attribute vec4 c1;\n" // Start color
 	"attribute vec4 c2;\n" // End color
 	"varying vec4 fragment_color;\n"
@@ -33,7 +34,7 @@ static const std::string vertexShader =
 	"    localPosition.xyz = p1 + (p2 - p1) * nlTime;\n"
 	"    localPosition.w = 1.0;\n"
 	"    gl_Position = vpMatrix * localPosition;\n"
-	"    gl_PointSize = s1 + (s2 - s1) * nlTime;\n"
+	"    gl_PointSize = (s1 + (s2 - s1) * nlTime)*unitSize;\n"
 	"    fragment_color = c1 + (c2 - c1) * nlTime;\n"
 	"  } else {\n"
     "    gl_Position = vec4(1000, 1000, 1000, 0);\n"
@@ -50,24 +51,11 @@ static const std::string fragmentShader =
 	"  gl_FragColor = fragment_color * texColor;\n"
 	"}\n";
 
-ParticleEmitter::ParticleEmitter(std::shared_ptr<ParticleGenerator> const& generator, ResourceId const& textureResource, uint32_t numberOfParticles) : 
-		vpMatrixLocation(Location::Type::Uniform, "vpMatrix"),
-		timeLocation(Location::Type::Uniform, "time"),
-		samplerLocation(Location::Type::Uniform, "sampler"),
-		c1Location(Location::Type::Attribute, "c1"),
-		c2Location(Location::Type::Attribute, "c2"),
-		timestampLocation(Location::Type::Attribute, "timestamp"),
-		durationLocation(Location::Type::Attribute, "duration"),
-		p1Location(Location::Type::Attribute, "p1"),
-		p2Location(Location::Type::Attribute, "p2"),
-		s1Location(Location::Type::Attribute, "s1"),
-		s2Location(Location::Type::Attribute, "s2"),
-		generator(generator),
-		textureResource(textureResource),
-		time(0.0f),
-		emitting(false),
-		hasLiveParticles(false),
- 		particles(numberOfParticles) {
+ParticleEmitter::ParticleEmitter(std::shared_ptr<ParticleGenerator> const& generator, ResourceId const& textureResource, float unitSize, uint32_t numberOfParticles) :
+	generator(generator),
+	textureResource(textureResource),
+	unitSize(unitSize),
+	particles(numberOfParticles) {
 
 	auto& programPool = Director::getDirector().getProgramPool();
 	auto programKey = programPool.getProgramKey(vertexShader, fragmentShader);
@@ -99,6 +87,9 @@ void ParticleEmitter::renderImpl(graphics::Canvas &canvas) {
 	checkGlError("glUniformMatrix4fv");
 
 	glUniform1f(timeLocation.get(program), time);
+	checkGlError("glUniform1f");
+
+	glUniform1f(unitSizeLocation.get(program), unitSize);
 	checkGlError("glUniform1f");
 
 	texture.setActive(samplerLocation.get(program), GL_TEXTURE0);
