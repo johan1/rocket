@@ -19,9 +19,6 @@ namespace rocket { namespace egl {
 				LOGD("Destroyed surface");
 			} else {
 				LOGE("Failed to destroy surface");
-#ifndef NDEBUG
-				std::abort(); // Let's abort in debug build to find what happened.
-#endif
 			}
 		});
 	}

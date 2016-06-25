@@ -24,20 +24,33 @@ public class Rocket2dActivity extends Activity {
 	}
 
 	private class SurfaceCallbacks implements SurfaceHolder.Callback {
+		private boolean isSurfaceDestroyed = false;
+		public SurfaceHolder holder;
+
 		@Override
 		public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+			this.holder = holder;
 			Rocket2dActivity.surfaceChanged(holder.getSurface(), format, width, height);		
 		}
 
 		@Override
 		public void surfaceCreated(SurfaceHolder holder) {
+			isSurfaceDestroyed = false;
+			this.holder = holder;
 			Rocket2dActivity.surfaceCreated(holder.getSurface());
 		}
 
 		@Override
 		public void surfaceDestroyed(SurfaceHolder holder) {
-			Rocket2dActivity.surfaceDestroyed(holder.getSurface());
-//			Rocket2dActivity.activityCreated(
+			this.holder = holder;
+			if (!isSurfaceDestroyed) {
+				isSurfaceDestroyed = true;
+				Rocket2dActivity.surfaceDestroyed(holder.getSurface());
+			}
+		}
+
+		public void surfaceDestroyed() {
+			surfaceDestroyed(holder);
 		}
 	}
 
@@ -85,6 +98,8 @@ public class Rocket2dActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "JAVA: onDestroy: " + this);
+
+		surfaceCallbacks.surfaceDestroyed();
 		Rocket2dActivity.activityDestroyed();
 
 		super.onDestroy();

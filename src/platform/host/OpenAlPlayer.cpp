@@ -163,6 +163,7 @@ void OpenAlPlayer::pauseAudioImpl(uint32_t playId) {
 }
 
 void OpenAlPlayer::stopAudioImpl(uint32_t playId) {
+	// TODO: Do we want to pause here?
 	if (audioStreams.find(playId) != audioStreams.end()) {
 		audioStreams.erase(playId);
 	}
@@ -173,7 +174,6 @@ bool OpenAlPlayer::isPlayingImpl(uint32_t playId) const {
 	if (it != audioStreams.end()) {
 		return it->second->isPlaying();
 	} else {
-		LOGW("OpenAlPlayer unregistered playId");
 		return false;
 	}
 }

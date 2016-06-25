@@ -6,6 +6,7 @@
 #include <ostream>
 #include <stdint.h>
 #include <string>
+#include <vector>
 
 namespace rocket { namespace resource { namespace image {
 

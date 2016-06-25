@@ -3,6 +3,7 @@
 
 #include "GamepadController.h"
 #include <boost/optional.hpp>
+#include <vector>
 
 namespace rocket {
 

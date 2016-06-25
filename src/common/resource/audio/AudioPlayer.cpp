@@ -31,6 +31,7 @@ std::unique_ptr<PcmStream> createPcmStream(std::string const& suffix, std::share
 
 // Resource management
 uint32_t AudioPlayer::load(rocket::resource::ResourceId resourceId) {
+	LOGD("Loading resource " << resourceId);
 	auto filename = resourceId.getFileName();
 	auto suffix = filename.substr(filename.size()-4, 4);
 
@@ -39,23 +40,30 @@ uint32_t AudioPlayer::load(rocket::resource::ResourceId resourceId) {
 
 	// Creating pcm stream 
 	std::unique_ptr<PcmStream> pcmStream = createPcmStream(suffix, is);
-	return player->loadAudio(std::move(pcmStream));
+	auto audioId = player->loadAudio(std::move(pcmStream));
+	LOGD("Resource " << resourceId << " has audio id : " << resourceId);
+	return audioId;
 }
 
 void AudioPlayer::free(uint32_t audioId) {
+	LOGD("Free audio id: " << audioId);
 	player->unloadAudio(audioId);
 }
 
 // Audio playing
 uint32_t AudioPlayer::play(uint32_t audioId, bool loop) {
-	return player->playAudio(audioId, loop);
+	auto playId = player->playAudio(audioId, loop);
+	LOGD("Playing audio id: " << audioId << ", playId " << playId);
+	return playId;
 }
 
 void AudioPlayer::pause(uint32_t playId) {
+	LOGD("Pause playId: " << playId);
 	player->pauseAudio(playId);
 }
 
 void AudioPlayer::stop(uint32_t playId) {
+	LOGD("Stop playId: " << playId);
 	player->stopAudio(playId);
 }
 
