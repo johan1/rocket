@@ -2,6 +2,7 @@
 #include "EglDisplay.h"
 #include "EglException.h"
 #include <rocket/Log.h>
+#include <boost/format.hpp>
 
 namespace rocket { namespace egl {
 

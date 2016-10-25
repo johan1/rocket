@@ -1,8 +1,12 @@
 #include "Texture2d.h"
 
-#include <GLES2/gl2.h>
+#include "../gl/gl.h"
 #include "../resource/image/Bitmap.h"
 #include "GLUtils.h"
+
+#include <rocket/Log.h>
+
+#include <sstream>
 
 namespace rocket { namespace glutils {
 
@@ -20,7 +24,13 @@ Texture2d::Texture2d() : widthRatio(1.0f), heightRatio(1.0f) {
 
 void Texture2d::setParameter(GLenum pname, GLint value) {
 	glTexParameteri(GL_TEXTURE_2D, pname, value);
-	checkGlError("texParameteri");
+
+	std::ostringstream ss{};
+	ss << "glTexParameteri: name=" << glEnumName(pname);
+	ss << ", value=";
+	ss << glConstantName(value);
+
+	checkGlError(ss.str());
 }
 
 void Texture2d::setParameters(GLint minFilter, GLint magFilter, GLint wrap_s, GLint wrap_t) {

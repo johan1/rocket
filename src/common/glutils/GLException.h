@@ -3,19 +3,20 @@
 
 #include <stdexcept>
 
-#include <GLES2/gl2.h>
+#include "../gl/gl.h"
 #include <rocket/Log.h>
+#include "GLUtils.h"
 
 namespace rocket { namespace glutils {
 
 class GLException : public std::runtime_error {
 public:
-	GLException(std::string const& what, GLint glErrorCode) : std::runtime_error{what}, glErrorCode{glErrorCode} {
-		LOGE("GLException \"" << what << "\", gl errorCode: 0x" << glErrorCode);
+	GLException(std::string const& what, GLenum glErrorCode) : std::runtime_error{what}, glErrorCode{glErrorCode} {
+		LOGE("GLException \"" << what << "\", error: " << glEnumName(glErrorCode));
 	}
-	GLint getErrorCode() { return glErrorCode; }
+	GLenum getErrorCode() { return glErrorCode; }
 private:
-	GLint glErrorCode;
+	GLenum glErrorCode;
 };
 
 }

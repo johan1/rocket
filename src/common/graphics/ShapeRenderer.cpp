@@ -11,7 +11,9 @@ using namespace rocket::glutils;
 namespace rocket { namespace graphics {
 
 static const std::string gVertexShader = 
+#ifdef USE_GLES2
     "precision highp float;\n"
+#endif
     "attribute vec4 position;\n"
 	"uniform mat4 mvpMatrix;\n"
     "void main() {\n"
@@ -19,7 +21,9 @@ static const std::string gVertexShader =
     "}\n";
 
 static const std::string gFragmentShader = 
+#ifdef USE_GLES2
     "precision highp float;\n"
+#endif
 	"uniform vec4 color;\n"
     "void main() {\n"
     "  gl_FragColor = color;\n"

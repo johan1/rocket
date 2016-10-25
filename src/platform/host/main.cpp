@@ -15,10 +15,14 @@
 #include "../../common/Application.h"
 #include "../../common/resource/FSResourcePackage.h"
 
-#include "../../common/egl/EglAttribMap.h"
-#include "../../common/egl/EglAttribMap.h"
+#ifdef USE_GLES2
+#include "../gles2/EglContextManager.h"
+#elif USE_GLEW
+#include "../glx/GlxContextManager.h"
+#endif
+
 #include "../../common/input/PointerEvent.h"
-#include "OpenAlPlayer.h"
+#include "../openal/OpenAlPlayer.h"
 
 #include "GamepadManager.h"
 
@@ -27,7 +31,6 @@ using namespace std;
 using namespace rocket;
 using namespace rocket::resource;
 using namespace rocket::resource::audio;
-using namespace rocket::egl;
 using namespace rocket::input;
 using namespace rocket::linux;
 using namespace rocket::game2d;
@@ -49,11 +52,26 @@ void postPointerEvent(PointerEvent::ActionType actionType,
 int main() {
 	LOGD("Hello rocket!");
 	Director::getDirector().setInitFunction(rocket::gameInit);
-	
+
 	XApplication app;
-	XWindow *window = app.createWindow(
-			PointerMotionMask| ButtonPressMask| ButtonReleaseMask | FocusChangeMask | KeyPressMask | KeyReleaseMask |
-			StructureNotifyMask);
+	#ifdef USE_GLEW
+		GlxContextManager glContextManager {app.getDisplay()};
+	#else
+	#ifdef USE_GLES2
+		EglContextManager glContextManager {app.getDisplay()};
+	#else
+	#error "Neither USE_GLES2 or USE_GLEW defined"
+	#endif
+	#endif
+
+	auto eventMask = PointerMotionMask| ButtonPressMask| ButtonReleaseMask | FocusChangeMask |
+			KeyPressMask | KeyReleaseMask | StructureNotifyMask;
+	
+	#ifdef USE_GLEW
+	XWindow *window = app.createWindow(glContextManager.getVisualInfo(), eventMask);
+	#else
+	XWindow *window = app.createSimpleWindow(eventMask);
+	#endif
 
 	int windowWidth = 0;
 	int windowHeight = 0;
@@ -126,7 +144,7 @@ int main() {
 				LOGD("Shutting down application");
 
 				Application::getApplication().pause();
-				Application::getApplication().surfaceDestroyed(window->getWindow());
+				Application::getApplication().surfaceDestroyed();
 				Application::getApplication().destroy();
 				app.destroyWindow(window);
 			}
@@ -138,7 +156,7 @@ int main() {
 			windowWidth = event.xconfigure.width;
 			windowHeight = event.xconfigure.height;
 			
-			Application::getApplication().surfaceChanged(window->getWindow(), 0, windowWidth, windowHeight);
+			Application::getApplication().surfaceChanged(0, windowWidth, windowHeight);
 		}
 	});
 
@@ -148,12 +166,15 @@ int main() {
 
 	Application::init(std::move(rm), std::unique_ptr<PlatformAudioPlayer>(new OpenAlPlayer()));
 
-	window->setFullscreen(Application::getApplication().getConfig().launchFullscreenWindow());
+	window->setFullscreen(false);
 	window->setVisible(true);
 
-	Application::getApplication().create(app.getDisplay());
+
+
+	Application::getApplication().create(&glContextManager);
 	Application::getApplication().resume();
-	Application::getApplication().surfaceCreated(window->getWindow());
+	glContextManager.setSurfaceWindow(window->getWindow());
+	Application::getApplication().surfaceCreated();
 
 	// Gamepad management.
 	ThreadPool gamepadControllerThread{1};

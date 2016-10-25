@@ -3,6 +3,7 @@
 #include <rocket/Algorithm.h>
 #include <rocket/Log.h>
 
+#include <boost/format.hpp>
 #include <boost/thread/locks.hpp> 
 
 #define SL_EXECUTE(FUN, ...) \

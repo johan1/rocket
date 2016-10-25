@@ -1,4 +1,4 @@
-#include <GLES2/gl2.h>
+#include "../gl/gl.h"
 
 #include "Program.h"
 #include "GLException.h"

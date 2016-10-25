@@ -23,7 +23,7 @@ std::unique_ptr<PcmStream> createPcmStream(std::string const& suffix, std::share
 		return std::unique_ptr<PcmStream>(
 				new PcmStream(std::unique_ptr<PcmDecoder>(new WavDecoder(is))));
 	} else {
-		std::string errorMsg = (boost::format("Filetype: %s is not supported") % suffix).str();
+		std::string errorMsg = "Filetype: " + suffix + " is not supported";
 		LOGE(errorMsg);
 		throw std::runtime_error(errorMsg);
 	}
@@ -47,6 +47,9 @@ uint32_t AudioPlayer::load(rocket::resource::ResourceId resourceId) {
 
 void AudioPlayer::free(uint32_t audioId) {
 	LOGD("Free audio id: " << audioId);
+	for (auto playId : playIds[audioId]) {
+		stop(playId);
+	}
 	player->unloadAudio(audioId);
 }
 
@@ -54,6 +57,7 @@ void AudioPlayer::free(uint32_t audioId) {
 uint32_t AudioPlayer::play(uint32_t audioId, bool loop) {
 	auto playId = player->playAudio(audioId, loop);
 	LOGD("Playing audio id: " << audioId << ", playId " << playId);
+	playIds[audioId].push_back(playId);
 	return playId;
 }
 

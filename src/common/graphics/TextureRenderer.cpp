@@ -18,7 +18,9 @@ static const std::string gVertexShader =
     "}\n";
 
 static const std::string gFragmentShader = 
+#ifdef USE_GLES2
     "precision mediump float;\n"
+#endif
 	"varying vec2 v_texCoord;\n"
 	"uniform sampler2D sampler;\n"
     "void main() {\n"

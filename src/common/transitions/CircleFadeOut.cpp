@@ -15,6 +15,7 @@ static const std::string gVertexShader = R"(
     }
 )";
 
+#ifdef USE_GLES2
 static const std::string gFragmentShader = R"(
     precision mediump float;
 	varying vec2 v_texCoord;
@@ -46,6 +47,38 @@ static const std::string gFragmentShader = R"(
 	  gl_FragColor = colour;
     }
 )";
+#else
+static const std::string gFragmentShader = R"(
+	varying vec2 v_texCoord;
+	uniform sampler2D sampler;
+	uniform vec2 scale;
+	uniform vec2 radius;
+
+    void main() {
+	  vec4 colour = texture2D(sampler, v_texCoord);
+      if (colour.a < 0.1) {
+        discard;
+        return;
+      }
+
+      float x = (2.0 * v_texCoord.x - 1.0) * scale.x;
+      float y = (2.0 * v_texCoord.y - 1.0) * scale.y;
+      float f = sqrt(x*x + y*y);
+	  float brightness;
+
+      if (f < radius[0]) { // inner boundary
+	    brightness = 1.0;
+	  } else if (f >= radius[1]) { // outer boundary
+	    brightness = 0.0;
+      } else {
+        brightness = (radius[1] - f)/(radius[1] - radius[0]);
+      }
+
+	  colour.rgb = colour.rgb * brightness;
+	  gl_FragColor = colour;
+    }
+)";
+#endif
 
 CircleFadeOut::CircleFadeOut() :
 		programKey(ProgramPool::calculateProgramKey(gVertexShader, gFragmentShader)),

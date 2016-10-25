@@ -5,10 +5,14 @@
 #include <boost/thread.hpp>
 
 #include "Application.h"
+/*
 #include "egl/EglDisplay.h"
+*/
 #include <rocket/Log.h>
 
-using namespace rocket::egl;
+// TODO: Remove later, it should be the platforms that sets the GlContextManager.
+// #include "EglContextManager.h"
+
 using namespace rocket::resource;
 using namespace rocket::resource::audio;
 using namespace rocket::util;
@@ -39,19 +43,26 @@ Application::Application(ResourceManager &&rm, std::unique_ptr<PlatformAudioPlay
 		resources(std::move(rm)),
 		audioPlayer(std::move(audioPlayer)) {
 	// If game.json exist we parse config from it.
+	/*
 	if (resources.exists(ResourceId("game.json"))) {
 		config = Config(*resources.openResource(ResourceId("game.json")));
 	}
+	*/
 }
 
 Application& Application::getApplication() {
 	return *application;
 }
 
-void Application::create(EGLNativeDisplayType displayId) {
+// TODO: Replace EGLNativeDisplayType with std::unique_ptr<ContextManager>
+//void Application::create(EGLNativeDisplayType displayId) {
+void Application::create(GlContextManager *glContextManager) {
 	auto future = renderThread.submit([&]() {
 		LOGD("Application::create\n");
 
+//		this->glContextManager = std::unique_ptr<GlContextManager>(new EglContextManager(displayId));
+		this->glContextManager = glContextManager;
+/*
 		LOGD("Egl config attribs " << config.getEglConfigAttr());
 		LOGD("Egl context attribs " << config.getEglContextAttr());
 		LOGD("Egl surface attrivs " << config.getEglSurfaceAttr());
@@ -74,6 +85,7 @@ void Application::create(EGLNativeDisplayType displayId) {
 
 		// Creating context
 		eglContext = eglDisplay->createContext(eglConfig, config.getEglContextAttr());
+*/
 	});
 	future.wait();
 	LOGD("Application::create done");
@@ -84,8 +96,11 @@ void Application::destroy() {
 		engine.destroyed();
 		openglReady = false;
 
+		// glContextManager.reset();
+		/*
 		eglContext.reset();
 		eglDisplay.reset();
+		*/
 		LOGD("Application::destroy");
 	});
 	future.wait();
@@ -119,34 +134,33 @@ void Application::resume() {
 	LOGD("Application::resume done");
 }
 
-void Application::surfaceCreated(EGLNativeWindowType windowId) {
+void Application::surfaceCreated(/*EGLNativeWindowType windowId*/) {
 	auto future = renderThread.submit([&]() {
 		LOGD("Application::surfaceCreated");
-		eglSurface = eglDisplay->createSurface(eglConfig, windowId, config.getEglSurfaceAttr());
+		glContextManager->createSurface();
+//		eglSurface = eglDisplay->createSurface(eglConfig, windowId, config.getEglSurfaceAttr());
 
 		scheduleMainLoop = true;
 	});
 	future.wait();
 }
 
-void Application::surfaceDestroyed(EGLNativeWindowType) {
+void Application::surfaceDestroyed(/*EGLNativeWindowType*/) {
 	auto future = renderThread.submit([&]() {
 		LOGD("Application::surfaceDestroyed");
-		eglSurface.reset();
+//		eglSurface.reset();
 	});
+
+	glContextManager = nullptr;
 
 	future.wait();
 }
 
-void Application::surfaceChanged(EGLNativeWindowType, int, unsigned int width, unsigned int height) {
+void Application::surfaceChanged(/*EGLNativeWindowType,*/ int, unsigned int width, unsigned int height) {
 	auto future = renderThread.submit([&]() {
 		LOGD("Application::surfaceChanged");
 
-		LOGD("Surface " << eglAttribToString(EGL_CONFIG_ID) << "=" << eglSurface->query(EGL_CONFIG_ID));
-		LOGD("Surface " << eglAttribToString(EGL_WIDTH) << "=" << eglSurface->query(EGL_WIDTH));
-		LOGD("Surface " << eglAttribToString(EGL_HEIGHT) << "=" << eglSurface->query(EGL_HEIGHT));
-		LOGD("Surface " << eglAttribToString(EGL_SWAP_BEHAVIOR) << "=" << eglSurface->query(EGL_SWAP_BEHAVIOR));
-
+		glContextManager->surfaceChanged();
 		engine.surfaceChanged(static_cast<GLsizei>(width), static_cast<GLsizei>(height));
 
 		if (scheduleMainLoop) {
@@ -166,14 +180,18 @@ void Application::surfaceChanged(EGLNativeWindowType, int, unsigned int width, u
 
 void Application::mainLoop() {
 	static bool makeCurrentCalled = false;
+	if (glContextManager == nullptr) {
+		return;
+	}
 
 	auto t1 = system_clock::now();
 
 	// Do surface update
-	if(!isPaused && eglSurface != nullptr) {
+	if(!isPaused && glContextManager->isSurfaceAvailable()) {
 		// Setting up
+		glContextManager->makeCurrent();
 		if (!makeCurrentCalled) {
-			makeCurrent(*eglDisplay.get(), *eglContext.get(), *eglSurface.get(), *eglSurface.get());
+			glContextManager->makeCurrent();
 			makeCurrentCalled = true;
 		}
 
@@ -191,13 +209,14 @@ void Application::mainLoop() {
 
 		// Update the engine.
 		engine.update();
-		eglSurface->swapBuffers();
+//		eglSurface->swapBuffers();
+		glContextManager->swapBuffers();
 	} else {
 		makeCurrentCalled = false;
 	}
 
 	// Let's reschedule as long as surface is available or if we're resumed.
-	if (eglSurface != nullptr || !isPaused) {
+	if (glContextManager != nullptr || !isPaused) {
 		renderThread.submit([this] { // Resubmit
 			mainLoop();
 		});
@@ -206,7 +225,7 @@ void Application::mainLoop() {
 	}
 
 	// Let's throttle if egl interval is less that 1, i.e. no sync with display refresh rate.
-	if (eglMaxSwapInterval < 1 || isPaused)  {
+	if (!glContextManager->isUsingVSync() || isPaused)  {
 		auto t2 = system_clock::now();
 		auto duration = duration_cast<milliseconds>(t2-t1);
 		auto remainingTime = targetFrameDuration - duration;

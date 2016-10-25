@@ -4,7 +4,8 @@
 #include <memory>
 
 #include "EglAttribMap.h"
-#include "../Types.h"
+
+#include "../../../common/Types.h"
 
 namespace rocket { namespace egl {
 class EglDisplay;

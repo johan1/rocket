@@ -51,7 +51,7 @@ XApplication::~XApplication() {
 	display = 0;
 }
 
-XWindow *XApplication::createWindow(long eventMask) {
+XWindow *XApplication::createSimpleWindow(long eventMask) {
 	int screen = DefaultScreen(display);
 
 	// create window
@@ -68,6 +68,23 @@ XWindow *XApplication::createWindow(long eventMask) {
 	xattr.override_redirect = false;
 
     XChangeWindowAttributes (display, window, CWOverrideRedirect, &xattr);
+	XSetWMProtocols(display, window, &deleteWindowAtom, 1);
+
+	// Propagate all events, we filter on event type.
+
+	XSelectInput(display, window, eventMask);
+	xWindows[window] = new XWindow(display, window);
+
+	return xWindows[window];
+}
+
+XWindow *XApplication::createWindow(XVisualInfo *vi, long eventMask) {
+	XSetWindowAttributes swa;
+	swa.colormap = XCreateColormap(display, RootWindow(display, vi->screen), vi->visual, AllocNone);
+	swa.border_pixel = 0;
+	swa.event_mask = StructureNotifyMask;
+	Window window = XCreateWindow(display, RootWindow(display, vi->screen), 0, 0, 800, 800, 0, vi->depth, InputOutput, vi->visual, CWBorderPixel|CWColormap|CWEventMask, &swa);
+
 	XSetWMProtocols(display, window, &deleteWindowAtom, 1);
 
 	// Propagate all events, we filter on event type.

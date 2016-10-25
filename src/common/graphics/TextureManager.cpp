@@ -14,9 +14,9 @@ namespace rocket { namespace graphics {
 Texture2d& TextureManager::getTexture(ResourceId const& resourceId) {
 	if (textures.find(resourceId) != textures.end()) {
 		return *(textures[resourceId].get());
-	} else {
+	} /*else {
 		LOGE("Couldn't lookup texture for " << resourceId);
-	}
+	} */
 
 	auto resources = Application::getApplication().getResources();
 	if (!resources.exists(resourceId) ) {

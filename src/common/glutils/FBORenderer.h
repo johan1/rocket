@@ -1,7 +1,7 @@
 #ifndef _ROCKET_FBORENDERER_H
 #define _ROCKET_FBORENDERER_H
 
-#include <GLES2/gl2.h>
+#include "../gl/gl.h"
 #include "Program.h"
 #include "ProgramPool.h"
 #include <memory>

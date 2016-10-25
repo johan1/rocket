@@ -2,16 +2,14 @@
 #define _APPLICATION_H_
 
 #include <memory>
-#include <EGL/egl.h>
+//#include <EGL/egl.h>
 #include <boost/chrono.hpp>
 #include <boost/thread.hpp>
 
 #include <rocket/ThreadPool.h>
-#include "Config.h"
-#include "egl/EglAttribMap.h"
-#include "egl/EglContext.h"
-#include "egl/EglDisplay.h"
-#include "egl/EglSurface.h"
+
+#include "GlContextManager.h"
+
 #include "game2d/Engine2d.h"
 #include "input/PointerEvent.h"
 #include "resource/ResourceManager.h"
@@ -37,7 +35,8 @@ public:
 	static Application& getApplication();
 
 	// Application engine, called from platform implementation
-	void create(EGLNativeDisplayType displayId);
+	// void create(EGLNativeDisplayType displayId);
+	void create(GlContextManager *glContextManager);
 
 	void pause();
 
@@ -45,11 +44,11 @@ public:
 
 	void destroy();
 
-	void surfaceCreated(EGLNativeWindowType windowId);
+	void surfaceCreated(/*EGLNativeWindowType windowId*/);
 
-	void surfaceDestroyed(EGLNativeWindowType windowId);
+	void surfaceDestroyed(/*EGLNativeWindowType windowId*/);
 
-	void surfaceChanged(EGLNativeWindowType windowId, int format, unsigned int width, unsigned int height);
+	void surfaceChanged(/*EGLNativeWindowType windowId,*/ int format, unsigned int width, unsigned int height);
 
 	template <typename Event>
 	void post(Event const& event);
@@ -61,7 +60,7 @@ public:
 
 	rocket::game2d::Engine2d& getEngine() { return engine; }
 
-	Config const& getConfig() const { return config; }
+	// Config const& getConfig() const { return config; }
 
 private:
 	typedef rocket::util::EventManager<rocket::input::PointerEvent> InputManager;
@@ -77,15 +76,7 @@ private:
 	boost::chrono::microseconds targetFrameDuration;
 	bool isPaused;
 
-	// Configuration
-	Config config;
-
-	// EGL state
-	EGLConfig eglConfig;
-	EGLint eglMaxSwapInterval;
- 	std::unique_ptr<rocket::egl::EglContext> eglContext;
-	std::unique_ptr<rocket::egl::EglDisplay> eglDisplay;
- 	std::unique_ptr<rocket::egl::EglSurface> eglSurface;
+	GlContextManager *glContextManager;
 
 	bool openglReady;
 	bool scheduleMainLoop;

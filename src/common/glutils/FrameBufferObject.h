@@ -1,7 +1,7 @@
 #ifndef ROCKET_FRAMEBUFFEROBJECT_H
 #define ROCKET_FRAMEBUFFEROBJECT_H
 
-#include <GLES2/gl2.h>
+#include "../gl/gl.h"
 
 namespace rocket { namespace glutils {
 

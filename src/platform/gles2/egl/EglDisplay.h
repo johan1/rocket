@@ -7,7 +7,7 @@
 #include <vector>
 #include <tuple>
 
-#include "../Types.h"
+#include "../../../common/Types.h"
 #include "EglException.h"
 #include "EglAttribMap.h"
 #include "EglContext.h"

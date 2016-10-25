@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <EGL/egl.h>
 #include <boost/format.hpp>
+#include <memory>
 
 #include <android/native_window.h>
 #include <android/native_window_jni.h>
@@ -13,7 +14,7 @@
 #include "../../common/resource/ResourcePackage.h"
 #include "../../common/resource/ZipResourcePackage.h"
 #include <rocket/Log.h>
-#include "../../common/egl/EglDisplay.h"
+#include "../gles2/EglContextManager.h"
 
 #include "SLESPlayer.h"
 
@@ -21,6 +22,8 @@ using namespace rocket;
 using namespace rocket::input;
 using namespace rocket::resource;
 using namespace rocket::resource::audio;
+
+std::unique_ptr<EglContextManager> eglContextManager;
 
 static int viewPortHeight = 0;
 
@@ -46,7 +49,8 @@ JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_activityCreated
 	rm.addResourcePackage("assets", rp);
 
 	Application::init(std::move(rm), std::unique_ptr<PlatformAudioPlayer>(new SLESPlayer()));
-	Application::getApplication().create(EGL_DEFAULT_DISPLAY);
+	eglContextManager = std::unique_ptr<EglContextManager>(new EglContextManager(EGL_DEFAULT_DISPLAY));
+	Application::getApplication().create(eglContextManager.get());
 }
 
 JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_activityPaused(JNIEnv*, jobject) {
@@ -60,24 +64,26 @@ JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_activityResumed
 JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_activityDestroyed(JNIEnv*, jobject) {
 	Application::getApplication().destroy();
 	Application::tearDown();
+	eglContextManager.reset();
 }
 
 JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_surfaceCreated(JNIEnv * env, jobject, jobject surface) {
 	ANativeWindow *window = ANativeWindow_fromSurface(env, surface);
 	ANativeWindow_acquire(window);
-	Application::getApplication().surfaceCreated(window);
+	eglContextManager->setSurfaceWindow(window);
+	Application::getApplication().surfaceCreated();
 }
 
 JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_surfaceChanged(JNIEnv * env, jobject, jobject surface, jint format, jint width, jint height) {
 	ANativeWindow *window = ANativeWindow_fromSurface(env, surface);
-	Application::getApplication().surfaceChanged(window, format, width, height);
+	Application::getApplication().surfaceChanged(/*window, */format, width, height);
 
 	viewPortHeight = height;
 }
 
 JNIEXPORT void JNICALL Java_com_mridle_rocket2d_Rocket2dActivity_surfaceDestroyed(JNIEnv * env, jobject, jobject surface) {
 	ANativeWindow *window = ANativeWindow_fromSurface(env, surface);
-	Application::getApplication().surfaceDestroyed(window);
+	Application::getApplication().surfaceDestroyed();
 	ANativeWindow_release(window);
 }
 

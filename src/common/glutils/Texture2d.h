@@ -1,7 +1,7 @@
 #ifndef _TEXTURE_H_
 #define _TEXTURE_H_
 
-#include <GLES2/gl2.h>
+#include "../gl/gl.h"
 
 #include "../resource/image/Bitmap.h"
 #include <stdexcept>

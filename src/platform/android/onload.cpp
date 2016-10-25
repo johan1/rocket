@@ -10,11 +10,9 @@
 #include <rocket/Log.h>
 
 #include "../../common/Application.h"
-#include "../../common/egl/EglAttribMap.h"
 
 using namespace rocket;
 using namespace rocket::game2d;
-using namespace rocket::egl;
 
 extern "C"
 {

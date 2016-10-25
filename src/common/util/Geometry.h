@@ -7,6 +7,10 @@
 #include <glm/glm.hpp>
 #include <ostream>
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
 namespace rocket { namespace util {
 	typedef glm::vec4 Point;
 	typedef glm::vec3 Dimension;

@@ -10,7 +10,7 @@
 #include <memory>
 #include <set>
 
-#include <GLES2/gl2.h>
+#include "../gl/gl.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 using namespace rocket::glutils;

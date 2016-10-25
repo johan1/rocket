@@ -2,6 +2,7 @@
 #define _X_WINDOW_HH_
 
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #include <vector>
 #include <map>
 #include <memory>
@@ -50,7 +51,9 @@ class XApplication {
 public:
 	XApplication();
 	~XApplication();
-	XWindow* createWindow(long eventMask);
+	XWindow* createSimpleWindow(long eventMask);
+	XWindow* createWindow(XVisualInfo *vi, long eventMask);
+
 	void destroyWindow(XWindow* xWindow);
 	void runEventDispatcher();
 

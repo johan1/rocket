@@ -33,6 +33,8 @@ namespace button_id {
 	// DEBUG STUFF
 	uint32_t const DEBUG_RELOAD 	  = 0xff01;
 	uint32_t const DEBUG_DUMP_INFO    = 0xff02;
+
+	uint32_t const NO_BUTTON		  = 0xffffffff;
 }
 
 class ControllerEvent {

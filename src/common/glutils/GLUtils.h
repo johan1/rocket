@@ -2,7 +2,7 @@
 #define _GL_UTILS_H_
 
 #include <string>
-#include <GLES2/gl2.h>
+#include "../gl/gl.h"
 
 namespace rocket { namespace glutils {
 
@@ -45,7 +45,8 @@ struct Vertex6d {
 // Throws GLException upon error.
 void checkGlError(std::string const& what);
 
-void printGLString(const char *name, GLenum s);
+std::string glEnumName(GLenum name);
+std::string glConstantName(GLint constant);
 
 }
 using namespace glutils; // Collapse

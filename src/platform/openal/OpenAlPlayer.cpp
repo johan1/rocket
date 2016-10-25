@@ -3,6 +3,7 @@
 #include <rocket/Log.h>
 
 #include <AL/al.h>
+#include <boost/format.hpp>
 
 using namespace boost;
 
