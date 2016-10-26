@@ -13,7 +13,12 @@ namespace rocket { namespace game2d {
 // The intention is to create som vertex buffer later. 
 // With this design we shouldn't need to update the attributes unless the particle data is changed. == WIN
 static const std::string vertexShader =
+#ifdef USE_GLEW
+	"#version 130\n\n"
+#endif
+#ifdef USE_GLES2
 	"precision highp float;\n"
+#endif
 	"uniform mat4 vpMatrix;\n" // View projection matrix. I.e. P*V
 	"uniform float time;\n"
 	"uniform float unitSize;\n"
@@ -42,7 +47,12 @@ static const std::string vertexShader =
 	"}\n";
 
 static const std::string fragmentShader =
+#ifdef USE_GLEW
+	"#version 130\n\n"
+#endif
+#ifdef USE_GLES2
 	"precision highp float;\n"
+#endif
 	"uniform sampler2D sampler; \n"
 	"varying vec4 fragment_color;\n"
 	"void main() {\n"
@@ -81,6 +91,9 @@ void ParticleEmitter::renderImpl(graphics::Canvas &canvas) {
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#ifdef USE_GLEW
+	glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
+#endif
 
 	// Pushing uniforms...
 	glUniformMatrix4fv(vpMatrixLocation.get(program), 1, GL_FALSE, glm::value_ptr(vpMatrix) );
